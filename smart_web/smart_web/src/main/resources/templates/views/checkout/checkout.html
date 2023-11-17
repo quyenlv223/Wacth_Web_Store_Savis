@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/weblayout}"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title >Thanh toán</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+</head>
+<body layout:fragment="content">
+
+<!-- breadcrumb area start -->
+<div class="breadcrumb-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="breadcrumb-wrap">
+                    <nav aria-label="breadcrumb">
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="http://localhost:1111/home">Trang chủ</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Thanh toán</li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- breadcrumb area end -->
+
+<!-- checkout main wrapper start -->
+<div class="checkout-page-wrapper">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <!-- Checkout Login Coupon Accordion Start -->
+                <div class="checkoutaccordion" id="checkOutAccordion">
+                    <div class="card">
+                        <h3>Bạn có mã giảm giá?<span data-toggle="collapse" data-target="#couponaccordion">Click để nhập mã giảm giá</span></h3>
+                        <div id="couponaccordion" class="collapse" data-parent="#checkOutAccordion">
+                            <div class="card-body">
+                                <div class="cart-update-option">
+                                    <div class="apply-coupon-wrapper">
+                                        <form id="formVoucher" class=" d-block d-md-flex">
+                                            <input id="voucherCode" type="text" placeholder="Enter Your Coupon Code" required />
+                                            <button class="check-btn sqr-btn">Áp dụng mã giảm giá</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Checkout Login Coupon Accordion End -->
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Checkout Billing Details -->
+            <div class="col-lg-6">
+                <div class="checkout-billing-details-wrap">
+                    <h2>Chi tiết hóa đơn</h2>
+                    <div class="billing-form-wrap">
+                        <form action="#">
+                            <div class="row">
+
+                                <div class="single-input-item">
+                                    <label for="f_name" class="required">Họ tên</label>
+                                    <input type="text" id="f_name" th:value="${cutomer.getFullName()}" required disabled/>
+                                </div>
+
+                            </div>
+
+                            <div class="single-input-item">
+                                <label for="phone" class="required">Điện thoại</label>
+                                <input type="text" id="phone" th:value="${cutomer.getPhoneNumber()}" required disabled />
+                            </div>
+
+
+                            <div class="single-input-item">
+                                <label for="country" class="required">Địa chỉ</label>
+                                <select name="country nice-select" id="country">
+                                    <option value="Afghanistan">Hà Nội</option>
+                                    <option>Khác...</option>
+                                </select>
+                            </div>
+
+                            <div class="single-input-item">
+                                <label for="street-address" class="required pt-20">Địa chỉ chi tiết</label>
+                                <input type="text" id="street-address" placeholder="Địa chỉ" required />
+                            </div>
+
+
+                            <div class="single-input-item">
+                                <label for="ordernote">Ghi chú cho cửa hàng</label>
+                                <textarea name="ordernote" id="ordernote" cols="30" rows="3" placeholder="Ghi chú"></textarea>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Order Summary Details -->
+            <div class="col-lg-6">
+                <div class="order-summary-details mt-md-26 mt-sm-26">
+                    <h2>Hóa đơn</h2>
+                    <div class="order-summary-content mb-sm-4">
+                        <!-- Order Summary Table -->
+                        <div class="order-summary-table table-responsive text-center">
+                            <table class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>Sản phẩm</th>
+                                    <th>Giá</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <th:block th:each="cart : ${listCart}">
+                                    <tr>
+                                        <td><a th:href="@{product/{id}(id=${cart.getIdProduct()})}" th:text="${cart.nameProduct}"></a><strong th:text="' × ' + ${cart.getQuantity()} "></strong></td>
+                                        <td th:text="${cart.getTotalString()}">$165.00</td>
+                                    </tr>
+                                </th:block>
+                                </tbody>
+                                <tfoot>
+                                <tr>
+                                    <td>Tổng tiền sản phẩm</td>
+                                    <td><strong th:text="${tong}">$400</strong></td>
+                                    <td id="totalPrice" hidden th:text="${tongPrice}"></td>
+                                </tr>
+                                <tr>
+                                    <td>Tiền ship</td>
+                                    <td><strong>30.000 ₫</strong></td>
+                                </tr>
+                                <tr>
+                                    <td>Tiền khuyến mãi</td>
+                                    <td><strong id="voucherPrice">0 đ</strong></td>
+                                </tr>
+                                <tr>
+                                    <td>Tổng tiền hóa đơn</td>
+                                    <td><strong th:text="${tongOrder}" id="totalOrder"></strong></td>
+                                </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                        <!-- Order Payment Method -->
+                        <div class="order-payment-method">
+                            <div class="single-payment-method show">
+                                <div class="payment-method-name">
+                                    <div class="custom-control custom-radio">
+                                        <input type="radio" id="cashon" name="paymentmethod" value="cash" class="custom-control-input" checked  />
+                                        <label class="custom-control-label" for="cashon">Thanh toán khi nhận hàng</label>
+                                    </div>
+                                </div>
+                                <div class="payment-method-details" data-method="cash">
+                                    <p>Thanh toán bằng chuyển khoản.</p>
+                                </div>
+                            </div>
+
+                            <div class="single-payment-method">
+                                <div class="payment-method-name">
+                                    <div class="custom-control custom-radio">
+                                        <input type="radio" id="paypalpayment" name="paymentmethod" value="paypal" class="custom-control-input" />
+                                        <label class="custom-control-label" for="paypalpayment">VN Pay <img src="assets/img/paypal-card.jpg" class="img-fluid paypal-card" alt="Paypal" /></label>
+                                    </div>
+                                </div>
+                                <div class="payment-method-details" data-method="paypal">
+                                    <p>Thanh toán bằng VNPay</p>
+                                </div>
+                            </div>
+                            <div class="summary-footer-area">
+                                <button onclick="createOrder()" type="submit" class="check-btn sqr-btn">Đặt đơn</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- checkout main wrapper end -->
+
+<input hidden id="totalOrder1" th:value="${tongPrice}">
+<input hidden id="priceOrderReal" th:value="${tongPrice}">
+<input hidden id="promotionCheck" th:value="${promotion}">
+<!-- product details wrapper end -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.4/sockjs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+<link href="https://pay.vnpay.vn/lib/vnpay/vnpay.css" rel="stylesheet" />
+<script src="https://pay.vnpay.vn/lib/vnpay/vnpay.js"></script>
+<!--<script th:src="@{/assets/js/listproduct.js}"></script>-->
+<!-- brand area end -->
+
+<script th:inline="javascript">
+    let cart = [[${listCart}]];
+    console.log(cart)
+    $('#formVoucher').on('submit', function(e) {
+        let code = $('#voucherCode').val();
+        let total = document.getElementById("totalPrice").innerText;
+        let check1 =  $('#promotionCheck').val();
+        console.log(check1)
+        console.log(total)
+        console.log(code);
+        total = Number(total);
+        $.ajax({
+            url: '/api/voucher/' + code,
+            type: 'GET',
+            success: function (result) {
+                console.log(result);
+                let check1 =  $('#promotionCheck').val();
+                console.log(check1)
+                if(Number(check1) === 0 ){ //check1 = 0 nghĩa là sản phẩm dính chương trình khuyến mãi
+                    if(result.accompanyPromo === 'UNUSED'){
+                        toastWarning("Thông báo", "Bạn không đủ điều kiện để sử dụng mã này")
+                    }
+                }else {
+                    toastSuccess("Thành công", "Áp mã sử dụng thành công");
+                    let tong = document.getElementById("totalOrder1").value;
+                    if(result.type === '%'){
+                        console.log(Number(tong) / Number(100) * Number(result.discount))
+                        let khuyenMai = Math.round(Number(tong) - (Number(tong) / Number(100) * Number(result.discount)));
+                        document.getElementById('priceOrderReal').value = khuyenMai;
+                        document.getElementById('totalOrder').innerText = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(Number(khuyenMai));
+                        document.getElementById('voucherPrice').innerText = result.discount + ' %';
+                        console.log(khuyenMai)
+                    }else {
+                        let khuyenMai =  Math.round(Number(tong) - Number(result.discount));
+                        document.getElementById('priceOrderReal').value = khuyenMai;
+                        console.log(khuyenMai + "voucherPrice")
+                        document.getElementById('voucherPrice').innerText = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(Number(result.discount));
+                        document.getElementById('totalOrder').innerText = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(Number(khuyenMai));
+
+                    }
+                }
+            },
+            error: function (error) {
+                toastDanger("Thất bại","Không có mã giảm giá này");
+            }
+        })
+        e.preventDefault(); // Now nothing will happen
+    });
+
+    function createOrder() {
+        console.log(confirm);
+        //vnpay.open({width: 768, height: 600, url: x.data});
+        let address = $('#street-address').val();
+        let note = $('#ordernote').val();
+        console.log(address);
+        console.log(note);
+        let code = $('#voucherCode').val();
+        console.log(code.length)
+        if(address.length === 0){
+            toastWarning("Thất bại", "Vui lòng nhập địa chỉ chi tiết");
+            return;
+        }
+
+        if(document.getElementById("cashon").checked){
+            let req = {
+                "address" : address,
+                "voucherCode" : code.length === 0 ? null : code,
+                "status" : 0,
+                "note" : note,
+                "totalMoney" : $('#priceOrderReal').val(),
+                "statusBy" : "offline"
+            }
+            console.log($('#priceOrderReal').val())
+            const swalWithBootstrapButtons = Swal.mixin({
+                customClass: {
+                    confirmButton: 'btn btn-success mx-2',
+                    cancelButton: 'btn btn-danger mx-2'
+                },
+                buttonsStyling: false
+            })
+
+            swalWithBootstrapButtons.fire({
+                title: `Bạn chắc chắn muốn đặt <br> Sản phẩm này chứ?`,
+                text: "Chú ý không thể hoàn tác sau khi thực hiện tác vụ này!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Vâng, tôi chắc chắn!',
+                cancelButtonText: 'Không, huỷ bỏ tác vụ!',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    swalWithBootstrapButtons.fire(
+                        'Đã đặt thành công!',
+                        'success'
+                    ).then(
+                        $.ajax({
+                            url: '/api/orders/create',
+                            type: 'GET',
+                            method: 'POST',
+                            contentType: 'application/json',
+                            data: JSON.stringify(req),
+                            success: function (result) {
+                                toastSuccess("Thành công", "Đặt hàng thành công");
+                                window.location.href = "http://localhost:1111/home";
+                            },
+                            error: function (error) {
+                                toastDanger("Thất bại","Đặt hàng thất bại");
+                            }
+                        })
+                    )
+                } else if (
+                    result.dismiss === Swal.DismissReason.cancel
+                ) {
+                    swalWithBootstrapButtons.fire(
+                        'Đã huỷ tác vụ',
+                        'Dữ liệu được bảo toàn :)',
+                        'error'
+                    )
+                }
+            })
+        }else {
+            let req = {
+                "address" : address,
+                "voucherCode" : code.length === 0 ? null : code,
+                "status" : 0,
+                "note" : note,
+                "totalMoney" : $('#priceOrderReal').val(),
+                "statusBy" : "online"
+            }
+            console.log($('#priceOrderReal').val())
+            $.ajax({
+                url: '/api/orders/create/online',
+                type: 'GET',
+                method: 'POST',
+                /*contentType: 'application/json',*/
+                contentType: `application/json`,
+                data: JSON.stringify(req),
+                /*CREATE_DATE: new Date(),*/
+                success: function (result) {
+                    console.log(result);
+                    vnpay.open({width: 768, height: 600, url: result.data});
+                },
+                error: function (error) {
+                    toastDanger("Thất bại","Đặt hàng thất bại");
+                }
+            })
+        }
+    }
+</script>
+
+
+</body>
+</html>
+
+

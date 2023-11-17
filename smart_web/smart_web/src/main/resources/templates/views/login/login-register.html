@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/weblayout}"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title >Đăng nhập</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+</head>
+<body layout:fragment="content">
+
+
+        <div class="breadcrumb-area">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="breadcrumb-wrap">
+                            <nav aria-label="breadcrumb">
+                                <ul class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="/home/index">Trang chủ</a></li>
+                                    <li class="breadcrumb-item active" aria-current="page">Đăng nhập & đăng ký</li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+<!--        <div class="cont pt-1 mt-2 offset-3">-->
+<!--            <div class="form sign-in">-->
+<!--                <h2>Đăng nhập</h2>-->
+<!--                <form class="form-horizontal" th:action="@{/login-check}" method="post">-->
+<!--                        <label class="lb">-->
+<!--                            <span>Email :</span>-->
+<!--                            <input type="email" name="username" id="username" placeholder="Nhập email">-->
+<!--                        </label>-->
+<!--                        <label class="lb">-->
+<!--                            <span>Mật khẩu : </span>-->
+<!--                            <input type="password" name="password" id="userpassword" placeholder="Nhập mật khẩu">-->
+<!--                        </label>-->
+<!--                        <button class="submit" id="btnLogin" type="button">Đăng nhập</button>-->
+<!--                </form>-->
+<!--                <p class="forgot-pass">Quên mật khẩu ?</p>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        -->
+        <div class="login-register-wrapper">
+            <div class="container">
+                <div class="member-area-from-wrap">
+                    <div class="row">
+                        <!-- Login Content Start -->
+                        <div class="col-lg-6">
+                            <div class="login-reg-form-wrap  pr-lg-50">
+                                <h2>Sign In</h2>
+                                    <form id="loginForm" th:action="@{/login-check}" method="post">
+                                    <div class="single-input-item">
+                                        <input type="email" name="username" id="username" placeholder="Email or Username" required />
+                                    </div>
+                                    <div class="single-input-item">
+                                        <input type="password" name="password" id="userpassword" placeholder="Enter your Password" required />
+                                    </div>
+                                    <div class="single-input-item">
+                                        <div class="login-reg-form-meta d-flex align-items-center justify-content-between">
+                                            <a href="#" class="forget-pwd">Forget Password?</a>
+                                        </div>
+                                    </div>
+                                    <div class="single-input-item">
+                                        <button id="btnLogin" class="sqr-btn">Login</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <!-- Login Content End -->
+
+                        <!-- Register Content Start -->
+                        <div class="col-lg-6">
+                            <div class="login-reg-form-wrap mt-md-34 mt-sm-34">
+                                <h2>Singup Form</h2>
+                                    <div class="single-input-item">
+                                        <input id="name" type="text" placeholder="Full Name" required />
+                                    </div>
+                                    <div class="single-input-item">
+                                        <input type="email" id="email" placeholder="Enter your Email" required />
+                                    </div>
+                                    <div class="single-input-item">
+                                        <input type="text" id="phone" placeholder="Số điện thoại" required />
+                                    </div>
+                                    <div class="single-input-item">
+                                        <input type="date"  id="date" placeholder="Ngày sinh" required />
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="single-input-item">
+                                                <input type="password" id="pass" placeholder="Enter your Password" required />
+                                                <input hidden  id="check" value="0">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="single-input-item">
+                                                <input type="password" id="pass1" placeholder="Repeat your Password" required />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="single-input-item">
+                                        <button class="sqr-btn" onclick="register()">Register</button>
+                                    </div>
+                            </div>
+                        </div>
+                        <!-- Register Content End -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+    <script th:src="@{/assets/js/vendor/script.js}"></script>
+        <script layout:fragment="script">
+            function validate() {
+                const patternEmail = /^\b[A-Z0-9._%-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b$/i;
+                const email = $('#username');
+
+                // Email
+                if (!patternEmail.test(email.val())) {
+                    toastDanger("Thất bại", "Email không hợp lệ");
+                    return false;
+                }
+                return true;
+            }
+            $('#btnLogin').click(function (){
+                if (validate()) {
+                    checkCountLoginFalse();
+                }
+            });
+
+            function checkCountLoginFalse(){
+                const email = $('#username').val();
+
+                $.ajax({
+                    url: `/api/login/count_login_false?email=${email}`,
+                    type: 'GET',
+                    success: function (data) {
+                        document.getElementById("loginForm").onsubmit;
+                    },
+                    error: function (data) {
+                        console.log(data)
+                    }
+                });
+            }
+            function register() {
+                let pass = $('#pass').val()
+                let pass1 = $('#pass1').val();
+                if(pass !== pass1){
+                    toastDanger("Thất bại", "Mật khẩu không giống nhau");
+                    return;
+                }
+                let name = $('#name').val();
+                let phone = $('#phone').val();
+                let email = $('#email').val();
+                let date = $('#date').val();
+                console.log(date)
+                if(name.trim().length === 0){
+                    toastDanger("Thất bại", "Vui lòng nhập tên");
+                    return;
+                }
+                if(phone.trim().length === 0){
+                    toastDanger("Thất bại", "Vui lòng nhập số điện thoại");
+                    return;
+                }
+                if(email.trim().length === 0){
+                    toastDanger("Thất bại", "Vui lòng nhập email");
+                    return;
+                }
+                let check = 0;
+                console.log(Number($('#check').val()))
+                $.ajax({
+                    url: `/api/login/phone?phone=${phone}`,
+                    type: 'GET',
+                    async: false,
+                    success: function (data) {
+                        $('#check').val(1);
+                        toastDanger("Thất bại" , "SĐT này đã tồn tại");
+                        document.getElementById("check").value = 1
+                    },
+                    error: function (data) {
+
+                    }
+                });
+                $.ajax({
+                    url: `/api/login/count_login_false?email=${email}`,
+                    type: 'GET',
+                    async: false,
+                    success: function (data) {
+                        $('#check').val(1);
+                       toastDanger("Thất bại" , "Email này đã tồn tại");
+                        document.getElementById("check").value = 1
+
+                    },
+                    error: function (data) {
+
+                    }
+                });
+
+                console.log(document.getElementById("check").value)
+                console.log(check)
+                if(Number($('#check').val()) === 1){
+                    return ;
+                }
+                if(date.trim().length === 0){
+                    toastDanger("Thất bại", "Vui lòng nhập ngày sinh");
+                    return;
+                }
+                const patternEmail = /^\b[A-Z0-9._%-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b$/i;
+                if (!patternEmail.test(email)) {
+                    toastDanger("Thất bại", "Email không hợp lệ");
+                    return false;
+                }
+                let data = {
+                    "name" : name,
+                    "email" : email,
+                    "phone" : phone,
+                    "date" : formatDate(date),
+                    "password" : pass
+                }
+
+                toastSuccess("Thành công", "Bạn đã đăng ký thành công")
+
+                $.ajax({
+                    url: '/api/login/register',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(data),
+                    success: function (result) {
+                        toastSuccess("Thành công", "Bạn đã đăng ký thành công")
+                    },
+                    error: function (error) {
+                        toastDanger("Thất bại", "Lỗi hệ thống, vui lòng thử lại sau")
+                    }
+                })
+            }
+
+            function formatDate (input) {
+                var datePart = input.match(/\d+/g),
+                    year = datePart[0], // get only two digits
+                    month = datePart[1], day = datePart[2];
+
+                return day+'/'+month+'/'+year;
+            }
+
+        </script>
+</body>
+
+
+</html>

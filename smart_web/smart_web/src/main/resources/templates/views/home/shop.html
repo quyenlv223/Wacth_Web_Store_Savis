@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/weblayout}"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="meta description">
+
+  <!-- Site title -->
+  <title>Galio - Mega Shop Responsive Bootstrap 4 Template</title>
+</head>
+
+<body layout:fragment="content">
+
+<!-- color switcher start -->
+
+<div class="color-switcher">
+  <div class="color-switcher-inner">
+    <div class="switcher-icon">
+      <i class="fa fa-cog fa-spin"></i>
+    </div>
+
+    <div class="switcher-panel-item">
+      <h3>Color Schemes</h3>
+      <ul class="nav flex-wrap colors">
+        <li class="default active" data-color="default" data-toggle="tooltip" data-placement="top" title="Red"></li>
+        <li class="green" data-color="green" data-toggle="tooltip" data-placement="top" title="Green"></li>
+        <li class="soft-green" data-color="soft-green" data-toggle="tooltip" data-placement="top" title="Soft-Green"></li>
+        <li class="sky-blue" data-color="sky-blue" data-toggle="tooltip" data-placement="top" title="Sky-Blue"></li>
+        <li class="orange" data-color="orange" data-toggle="tooltip" data-placement="top" title="Orange"></li>
+        <li class="violet" data-color="violet" data-toggle="tooltip" data-placement="top" title="Violet"></li>
+      </ul>
+    </div>
+
+    <div class="switcher-panel-item">
+      <h3>Layout Style</h3>
+      <ul class="nav layout-changer">
+        <li><button class="btn-layout-changer active" data-layout="wide">Wide</button></li>
+        <li><button class="btn-layout-changer" data-layout="boxed">Boxed</button></li>
+      </ul>
+    </div>
+
+    <div class="switcher-panel-item bg">
+      <h3>Background Pattern</h3>
+      <ul class="nav flex-wrap bgbody-style bg-pattern">
+        <li><img th:src="@{/assets/img/bg-panel/bg-pettern/1.png}" alt="Pettern"></li>
+        <li><img th:src="@{/assets/img/bg-panel/bg-pettern/2.png}" alt="Pettern"></li>
+        <li><img th:src="@{/assets/img/bg-panel/bg-pettern/3.png}" alt="Pettern"></li>
+        <li><img th:src="@{/assets/img/bg-panel/bg-pettern/4.png}" alt="Pettern"></li>
+        <li><img th:src="@{/assets/img/bg-panel/bg-pettern/5.png}" alt="Pettern"></li>
+        <li><img th:src="@{/assets/img/bg-panel/bg-pettern/6.png}" alt="Pettern"></li>
+      </ul>
+    </div>
+
+    <div class="switcher-panel-item bg">
+      <h3>Background Image</h3>
+      <ul class="nav flex-wrap bgbody-style bg-img">
+        <li><img th:src="@{/assets/img/bg-panel/bg-img/01.jpg}" alt="Images"></li>
+        <li><img th:src="@{/assets/img/bg-panel/bg-img/02.jpg}" alt="Images"></li>
+        <li><img th:src="@{/assets/img/bg-panel/bg-img/03.jpg}" alt="Images"></li>
+        <li><img th:src="@{/assets/img/bg-panel/bg-img/04.jpg}" alt="Images"></li>
+        <li><img th:src="@{/assets/img/bg-panel/bg-img/05.jpg}" alt="Images"></li>
+        <li><img th:src="@{/assets/img/bg-panel/bg-img/06.jpg}" alt="Images"></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="wrapper box-layout">
+  <!-- breadcrumb area start -->
+  <div class="breadcrumb-area">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <div class="breadcrumb-wrap">
+            <nav aria-label="breadcrumb">
+              <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/home/index">Trang chủ</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Sản phẩm</li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- breadcrumb area end -->
+
+  <!-- page wrapper start -->
+  <div class="page-main-wrapper">
+    <div class="container">
+      <div class="row">
+        <!-- product main wrap start -->
+        <div class="col-12">
+          <div class="shop-banner img-full">
+            <img src="assets/img/banner/banner_static1.jpg" alt="">
+          </div>
+          <!-- product view wrapper area start -->
+          <div class="shop-product-wrapper pt-34">
+            <!-- product item start -->
+            <div class="shop-product-wrap grid row">
+              <th:block th:each="iphone : ${list}">
+                <div class="col-lg-3 col-md-4 col-sm-6">
+                  <!-- product single grid item start -->
+                  <div class="product-item fix mb-30">
+                    <div class="product-thumb">
+                      <a th:href="@{/product/{id}(id = ${iphone.id})}" >
+                        <img th:src="${iphone.imageKey}" alt="">
+                      </a>
+                      <div class="product-label">
+                        <span>hot</span>
+                      </div>
+                      <div class="product-action-link">
+                        <a href="#" data-toggle="modal" data-target="#quick_view"> <span data-toggle="tooltip" data-placement="left" title="Quick view"><i class="fa fa-search"></i></span> </a>
+                        <a href="#" data-toggle="tooltip" data-placement="left" title="Wishlist"><i class="fa fa-heart-o"></i></a>
+                        <a href="#" data-toggle="tooltip" data-placement="left" title="Compare"><i class="fa fa-refresh"></i></a>
+                        <a href="#" data-toggle="tooltip" data-placement="left" title="Add to cart"><i class="fa fa-shopping-cart"></i></a>
+                      </div>
+                    </div>
+                    <div class="product-content">
+                      <h4><a th:href="@{/product/{id}(id = ${iphone.id})}" th:text="${iphone.name}">vertual product 01</a></h4>
+                      <div class="pricebox">
+                        <span class="regular-price" th:text="${iphone.getRomRespones().get(0).getProductDetailStatusRespones().get(0).getPriceString()}">$70.00</span>
+                        <div class="ratings">
+                          <span class="good"><i class="fa fa-star"></i></span>
+                          <span class="good"><i class="fa fa-star"></i></span>
+                          <span class="good"><i class="fa fa-star"></i></span>
+                          <span class="good"><i class="fa fa-star"></i></span>
+                          <span><i class="fa fa-star"></i></span>
+                          <div class="pro-review">
+                            <span>1 review(s)</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- product single grid item end -->
+                </div>
+              </th:block>
+            </div>
+            <!-- product item end -->
+          </div>
+          <!-- product view wrapper area end -->
+
+          <!-- start pagination area -->
+          <div class="paginatoin-area text-center pt-28">
+            <div class="row">
+              <div class="col-12">
+                <ul class="pagination-box">
+                  <li><a class="Previous" href="#">Previous</a></li>
+                  <li class="active"><a href="/home/all?page=1">1</a></li>
+                  <li><a href="/home/all?page=2">2</a></li>
+                  <li><a href="/home/all?page=3">3</a></li>
+                  <li><a class="Next" href="#"> Next </a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <!-- end pagination area -->
+        </div>
+        <!-- product main wrap end -->
+      </div>
+    </div>
+  </div>
+  <!-- page wrapper end -->
+
+
+</div>
+
+</body>
+
+
+
+</html>

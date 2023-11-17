@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<header th:fragment="header">
+    <!-- TOP HEADER -->
+    <div class="header-top-area bg-gray text-center text-md-left">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-md-5">
+                    <div class="header-call-action">
+                        <a href="#">
+                            <i class="fa fa-envelope"></i>
+                            info@website.com
+                        </a>
+                        <a href="#">
+                            <i class="fa fa-phone"></i>
+                            0123456789
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-7">
+                    <div class="header-top-right float-md-right float-none">
+                        <nav>
+                            <ul>
+                                <li>
+                                    <a href="/cart">Giỏ hàng</a>
+                                </li>
+                                <li>
+                                    <a href="/logout">Đăng xuất</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /TOP HEADER -->
+    <div class="header-middle-area pt-20 pb-20">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-3">
+                    <div class="brand-logo">
+                        <a href="/home">
+                            <img width="100px" th:src="@{/assets/img/logo/blogger.png}"
+                                 alt="brand logo">
+                        </a>
+                        </br>
+                        <!--<span style="worfont-size: 35px;color: #d8373e;">Juli</span>-->
+                        <!--<h1 style="color: #2F96B4">Poly-Watch</h1>-->
+                    </div>
+                </div>
+                <div class="col-lg-9">
+                    <div class="header-middle-right">
+                        <div class="header-middle-block">
+                            <div class="header-middle-searchbox">
+                                <input type="text" placeholder="Search..." id="search1">
+                                <button id="searchProduct" class="search-btn"><i class="fa fa-search"></i></button>
+                            </div>
+                            <div class="header-mini-cart" onclick="onViewCart()">
+                                <div class="mini-cart-btn">
+                                    <i class="fa fa-shopping-cart"></i>
+                                    <span id="sizeCart" class="cart-notification" th:text="${sizeCart}"></span>
+                                </div>
+                                <div style="font-size: 16px" id="total" class="cart-total-price">
+                                    Giỏ hàng
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-header-wrapper bdr-bottom1">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="main-header-inner">
+                        <div class="category-toggle-wrap">
+                            <div class="category-toggle">
+                                Danh Mục
+                                <div class="cat-icon">
+                                    <i class="fa fa-angle-down"></i>
+                                </div>
+                            </div>
+                            <nav class="category-menu">
+                                <ul>
+                                    <th:block th:each="cart : ${category}">
+                                        <li><a th:href="@{'/home/'+${cart.id}}">
+                                            [[${cart.name}]]</a></li>
+                                    </th:block>
+                                </ul>
+                            </nav>
+                        </div>
+                        <div class="main-menu">
+                            <nav id="mobile-menu">
+                                <ul>
+                                    <li class="active"><a th:href="@{/home}"><i class="fa fa-home"></i>Trang chủ</i></a>
+
+                                    </li>
+                                    <li><a type="button" th:href="@{/your-orders}">Lịch Sử</a></li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 d-block d-lg-none">
+                    <div class="mobile-menu"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal " tabindex="-1" role="dialog" id="modal-phone-number">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-danger" style="margin-top: 10px">Xem lịch sử mua hàng</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Tra cứu lịch sử mua hàng : </p>
+                    <input class="form-control" type="text" id="historyPhone"
+                           placeholder="Mời Nhập số điện thoại mua hàng">
+                    <p class="text-danger" id="errorHistoryPhone"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="checkHistory()">Kiểm tra</button>
+                    <br>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal " tabindex="-1" role="dialog" id="modal-send-email">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-danger" style="margin-top: 10px">Xem lịch sử mua hàng</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p id="title-send-mail"></p>
+                    <input class="form-control" type="text" id="historyPhoneSenMail"
+                           placeholder="Nhập mã xác nhận gồm 6 số">
+                    <p class="text-danger" id="errorHistoryPhoneSenMail"></p>
+                    <p id="thu-ma"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="confimOtp()">Xác nhận</button>
+                    <button type="button" style="display: none" class="btn btn-info" onclick="thuLaiOtp()"
+                            id="thu-lai-otp">Thử lại
+                    </button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <br>
+
+    <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
+    <df-messenger
+            intent="WELCOME"
+            chat-title="WatchStore_XinChao!!!"
+            agent-id="baec3a46-91bc-4c9a-8e0a-d48487510a63"
+            language-code="vi"
+    ></df-messenger>
+
+    <script>
+
+        function onViewCart() {
+            window.location.href = '/cart'
+        }
+
+    </script>
+</header>
+
+</html>

@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/weblayout}"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${product.name}"></title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+</head>
+<body layout:fragment="content">
+<!-- breadcrumb area start -->
+<!-- breadcrumb area start -->
+<div class="breadcrumb-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="breadcrumb-wrap">
+                    <nav aria-label="breadcrumb">
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/home/index">Trang chủ</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Chi tiết sản phẩm</li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- breadcrumb area end -->
+
+<!-- product details wrapper start -->
+<div class="product-details-wrapper">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-9">
+                <!-- product details inner end -->
+                <div class="product-details-inner">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="product-large-slider mb-20 slick-arrow-style_2">
+                                <div class="pro-large-img img-zoom">
+                                    <img th:src="${product.imageKey}" alt="" />
+                                </div>
+                                <th:block th:each = "image : ${product.srcImage}">
+                                    <div class="pro-large-img img-zoom">
+                                        <img th:src="${image}" alt=""/>
+                                    </div>
+                                </th:block>
+                            </div>
+                            <div class="pro-nav slick-padding2 slick-arrow-style_2">
+                                <div class="pro-nav-thumb"><img th:src="${product.imageKey}" alt="" /></div>
+                                <th:block th:each = "image : ${product.srcImage}">
+                                    <div class="pro-nav-thumb"><img th:src="${image}" alt="" /></div>
+                                </th:block>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="product-details-des mt-md-34 mt-sm-34">
+                                <h3><a href="product-details.html" th:text="${product.name}"></a></h3>
+                                <div class="ratings">
+                                    <span class="good"><i class="fa fa-star"></i></span>
+                                    <span class="good"><i class="fa fa-star"></i></span>
+                                    <span class="good"><i class="fa fa-star"></i></span>
+                                    <span class="good"><i class="fa fa-star"></i></span>
+                                    <span><i class="fa fa-star"></i></span>
+                                    <div class="pro-review">
+                                        <span>1 đánh giá(s)</span>
+                                    </div>
+                                </div>
+                                <div class="customer-rev">
+                                    <a href="#">(1 người đánh giá)</a>
+                                </div>
+
+                                <div class="pricebox" th:if="${product.romRespones[0].productPropertyRespones[0].getPricePromotion() > 0}">
+                                    <del class="regular-price" id="product-price"><span  th:text="${product.romRespones[0].productPropertyRespones[0].getPriceString()}"></span></del>
+                                </div>
+                                <div class="pricebox" th:if="${product.romRespones[0].productPropertyRespones[0].getPricePromotion() > 0}">
+                                    <span class="regular-price" id="product-promotion"  th:text="${product.romRespones[0].productPropertyRespones[0].getPricePromotionString()}"></span>
+                                </div>
+                                <div class="pricebox" th:if="${product.romRespones[0].productPropertyRespones[0].getPricePromotion() == 0}">
+                                    <span class="regular-price" id="product-price"  th:text="${product.romRespones[0].productPropertyRespones[0].getPriceString()}"></span>
+                                </div>
+
+                                <div class="color-option mt-10">
+                                    <h5>Màu :</h5>
+                                    <ul id="color-product-detail">
+                                        <th:block th:each = "color : ${product.romRespones[0].productPropertyRespones}">
+                                            <li>
+                                                <a th:attr="onclick=${'changeColor('''+color.color+''' , ' + product.romRespones[0].id +')'}" th:style="'background : ' + ${color.color}"  th:title="${color.color}"></a>
+                                            </li>
+                                        </th:block>
+                                    </ul>
+                                </div>
+
+                                <div class="pro-size mb-20 mt-20">
+                                    <h5>Bộ nhớ trong :</h5>
+                                    <select id="rom-product-detail" class="nice-select" onchange="changeRom()">
+                                        <th:block th:each = "rom : ${product.romRespones}">
+                                            <option th:text="${rom.name}" th:value="${rom.id}"></option>
+                                        </th:block>
+                                    </select>
+                                </div>
+                                <div class="quantity-cart-box d-flex align-items-center">
+                                    <div class="quantity">
+                                        <div class="pro-qty"><input id="quantityCart" type="text" value="1"></div>
+                                    </div>
+                                    <div class="action_link">
+                                        <a class="buy-btn" onclick="addCart()" type="button">thêm vào giỏ hàng<i class="fa fa-shopping-cart"></i> </a>
+                                    </div>
+                                </div>
+                                <div class="useful-links mt-20">
+                                    <a href="#" data-toggle="tooltip" data-placement="top" title="Compare"><i class="fa fa-refresh"></i>compare</a>
+                                    <a href="#" data-toggle="tooltip" data-placement="top" title="Wishlist"><i class="fa fa-heart-o"></i>wishlist</a>
+                                </div>
+                                <div class="share-icon mt-20">
+                                    <a class="facebook" href="#"><i class="fa fa-facebook"></i>like</a>
+                                    <a class="twitter" href="#"><i class="fa fa-twitter"></i>tweet</a>
+                                    <a class="pinterest" href="#"><i class="fa fa-pinterest"></i>save</a>
+                                    <a class="google" href="#"><i class="fa fa-google-plus"></i>share</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- product details inner end -->
+
+                <!-- product details reviews start -->
+                <div class="product-details-reviews mt-34">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="product-review-info">
+                                <ul class="nav review-tab">
+                                    <li>
+                                        <a class="active" data-toggle="tab" href="#tab_one">mô tả</a>
+                                    </li>
+                                    <li>
+                                        <a data-toggle="tab" href="#tab_two">thông tin</a>
+                                    </li>
+                                    <li>
+                                        <a data-toggle="tab" href="#tab_three">reviews</a>
+                                    </li>
+                                </ul>
+                                <div class="tab-content reviews-tab">
+                                    <div class="tab-pane fade show active" id="tab_one" >
+                                        <div th:utext="${product.note}"></div>
+                                    </div>
+                                    <div class="tab-pane fade" id="tab_two">
+                                        <table class="table table-bordered">
+                                            <tbody>
+                                            <tr>
+                                                <td>Màn hình</td>
+                                                <td th:text="${product.attributeRespone.screen}"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Hệ điều hành</td>
+                                                <td th:text="${product.attributeRespone.operatingSystem}"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Chip</td>
+                                                <td th:text="${product.attributeRespone.chip}"></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>Ram</td>
+                                                <td th:text="${product.attributeRespone.ram} + ' GB'"></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>Pin, sạc</td>
+                                                <td th:text="${product.attributeRespone.pin}"></td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="tab-pane fade" id="tab_three">
+                                        <form action="#" class="review-form">
+                                            <h5>1 review for Simple product 12</h5>
+                                            <div class="total-reviews">
+                                                <div class="rev-avatar">
+                                                    <img src="assets/img/about/avatar.jpg" alt="">
+                                                </div>
+                                                <div class="review-box">
+                                                    <div class="ratings">
+                                                        <span class="good"><i class="fa fa-star"></i></span>
+                                                        <span class="good"><i class="fa fa-star"></i></span>
+                                                        <span class="good"><i class="fa fa-star"></i></span>
+                                                        <span class="good"><i class="fa fa-star"></i></span>
+                                                        <span><i class="fa fa-star"></i></span>
+                                                    </div>
+                                                    <div class="post-author">
+                                                        <p><span>admin -</span> 30 Nov, 2018</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <div class="col">
+                                                    <label class="col-form-label"><span class="text-danger">*</span> Your Name</label>
+                                                    <input type="text" class="form-control" required>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <div class="col">
+                                                    <label class="col-form-label"><span class="text-danger">*</span> Your Email</label>
+                                                    <input type="email" class="form-control" required>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <div class="col">
+                                                    <label class="col-form-label"><span class="text-danger">*</span> Your Review</label>
+                                                    <textarea class="form-control" required></textarea>
+                                                    <div class="help-block pt-10"><span class="text-danger">Note:</span> HTML is not translated!</div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <div class="col">
+                                                    <label class="col-form-label"><span class="text-danger">*</span> Rating</label>
+                                                    &nbsp;&nbsp;&nbsp; Bad&nbsp;
+                                                    <input type="radio" value="1" name="rating">
+                                                    &nbsp;
+                                                    <input type="radio" value="2" name="rating">
+                                                    &nbsp;
+                                                    <input type="radio" value="3" name="rating">
+                                                    &nbsp;
+                                                    <input type="radio" value="4" name="rating">
+                                                    &nbsp;
+                                                    <input type="radio" value="5" name="rating" checked>
+                                                    &nbsp;Good
+                                                </div>
+                                            </div>
+                                            <div class="buttons">
+                                                <button class="sqr-btn" type="submit">Continue</button>
+                                            </div>
+                                        </form> <!-- end of review-form -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- product details reviews end -->
+
+                <!-- related products area start -->
+                <div class="related-products-area mt-34">
+                    <div class="section-title mb-30">
+                        <div class="title-icon">
+                            <i class="fa fa-desktop"></i>
+                        </div>
+                        <h3>Sản phẩm đồng giá</h3>
+                    </div> <!-- section title end -->
+                    <!-- featured category start -->
+                    <div class="featured-carousel-active slick-padding slick-arrow-style">
+                        <!-- product single item start -->
+                        <th:block th:each="iphone : ${listRandom}">
+                            <div class="product-item fix">
+                                <div class="product-thumb">
+                                    <a th:href="@{/product/{id}(id = ${iphone.id})}">
+                                        <img th:src="${iphone.imageKey}" class="img-pri" alt=""/>
+                                    </a>
+                                    <div class="product-label">
+                                        <span>hot</span>
+                                    </div>
+                                    <div class="product-action-link">
+                                        <a href="#" data-toggle="modal" data-target="#quick_view"> <span
+                                                data-toggle="tooltip" data-placement="left" title="Quick view"><i
+                                                class="fa fa-search"></i></span> </a>
+                                        <a href="#" data-toggle="tooltip" data-placement="left" title="Wishlist"><i
+                                                class="fa fa-heart-o"></i></a>
+                                        <a href="#" data-toggle="tooltip" data-placement="left" title="Compare"><i
+                                                class="fa fa-refresh"></i></a>
+                                        <a href="#" data-toggle="tooltip" data-placement="left" title="Add to cart"><i
+                                                class="fa fa-shopping-cart"></i></a>
+                                    </div>
+                                </div>
+                                <div class="product-content">
+                                    <h4><a th:href="@{/product/{id}(id = ${iphone.id})}" th:text="${iphone.name}">affiliate
+                                        product</a>
+                                    </h4>
+                                    <div class="pricebox">
+                                        <span class="regular-price"
+                                              th:text="${iphone.getRomRespones().get(0).getProductPropertyRespones().get(0).getPriceString()}"
+                                        >$90.00</span>
+                                        <div class="ratings">
+                                            <span class="good"><i class="fa fa-star"></i></span>
+                                            <span class="good"><i class="fa fa-star"></i></span>
+                                            <span class="good"><i class="fa fa-star"></i></span>
+                                            <span class="good"><i class="fa fa-star"></i></span>
+                                            <span><i class="fa fa-star"></i></span>
+                                            <div class="pro-review">
+                                                <span>1 review(s)</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </th:block>
+                    </div>
+                    <!-- featured category end -->
+                </div>
+                <!-- related products area end -->
+            </div>
+
+            <!-- sidebar start -->
+            <div class="col-lg-3">
+                <div class="shop-sidebar-wrap fix mt-md-22 mt-sm-22">
+                    <!-- featured category start -->
+                    <div class="sidebar-widget mb-22">
+                        <div class="section-title-2 d-flex justify-content-between mb-28">
+                            <h3>Sản phẩm liên quan</h3>
+                            <div class="category-append"></div>
+                        </div> <!-- section title end -->
+                        <div class="category-carousel-active row" data-row="4">
+
+                            <th:block th:each="iphone : ${listRandom}">
+                                <div class="col">
+                                    <div class="category-item">
+                                        <div class="category-thumb">
+                                            <a th:href="@{/product/{id}(id = ${iphone.id})}" >
+                                                <img th:src="${iphone.imageKey}" alt="">
+                                            </a>
+                                        </div>
+                                        <div class="category-content">
+                                            <h4><a th:href="@{/product/{id}(id = ${iphone.id})}" th:text="${iphone.name}">Virtual Product 01</a></h4>
+                                            <div class="price-box">
+                                                <div class="regular-price" th:text="${iphone.getRomRespones().get(0).getProductPropertyRespones().get(0).getPriceString()}">
+                                                    $150.00
+                                                </div>
+
+                                            </div>
+                                            <div class="ratings">
+                                                <span class="good"><i class="fa fa-star"></i></span>
+                                                <span class="good"><i class="fa fa-star"></i></span>
+                                                <span class="good"><i class="fa fa-star"></i></span>
+                                                <span class="good"><i class="fa fa-star"></i></span>
+                                                <span><i class="fa fa-star"></i></span>
+                                                <div class="pro-review">
+                                                    <span>1 review(s)</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div> <!-- end single item -->
+                                </div> <!-- end single item column -->
+                            </th:block>
+
+                        </div>
+                    </div>
+                    <!-- featured category end -->
+
+                    <!-- manufacturer start -->
+
+                    <!-- manufacturer end -->
+
+                    <!-- product tag start -->
+                    <div class="sidebar-widget mb-22">
+                        <div class="sidebar-title mb-20">
+                            <h3>tag</h3>
+                        </div>
+                        <div class="sidebar-widget-body">
+                            <div class="product-tag">
+                                <a href="#">camera</a>
+                                <a href="#">computer</a>
+                                <a href="#">tablet</a>
+                                <a href="#">watch</a>
+                                <a href="#">smart phones</a>
+                                <a href="#">handbag</a>
+                                <a href="#">shoe</a>
+                                <a href="#">men</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- product tag end -->
+
+                    <!-- sidebar banner start -->
+                    <div class="sidebar-widget mb-22">
+                        <div class="img-container fix img-full mt-30">
+                            <a href="#"><img src="assets/img/banner/banner_shop.jpg" alt=""></a>
+                        </div>
+                    </div>
+                    <!-- sidebar banner end -->
+                </div>
+            </div>
+            <!-- sidebar end -->
+        </div>
+    </div>
+</div>
+<!-- product details wrapper end -->
+
+
+<!--<input id="sessionStaff" hidden type="text" th:value="${session.staff.id}" th:if="${session.staff != null}">-->
+<!--<input id="sessionStaff" hidden type="text" value="-1" th:if="${session.staff == null}">-->
+
+<!-- product details wrapper end -->
+<input hidden id="idProductProper" value="1">
+<input hidden id="quantityProduct" value="1">
+<input hidden id="product-promotionPrice" th:value="${product.romRespones[0].productPropertyRespones[0].getPricePromotion()}">
+<br>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.4/sockjs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+<!--<script th:src="@{/assets/js/listproduct.js}"></script>-->
+<!-- brand area end -->
+
+<script th:inline="javascript">
+    let product = [[${product}]];
+    let sizeCart = [[${sizeCart}]];
+    console.log(product)
+    document.getElementById("idProductProper").value = product.romRespones[0].productPropertyRespones[0].id;
+    document.getElementById("quantityProduct").value = product.romRespones[0].productPropertyRespones[0].quantity;
+    function changeRom(){
+        let colorRom = document.getElementById("color-product-detail");
+        while (colorRom.lastElementChild){
+            colorRom.removeChild(colorRom.lastElementChild);
+        }
+        var romId = $("#rom-product-detail").find(":selected").val();
+        console.log(romId)
+
+        for (let i = 0; i < product.romRespones.length; i++) {
+            if(romId === product.romRespones[i].id){
+
+                for (let j = 0; j < product.romRespones[i].productPropertyRespones.length; j++) {
+                    document.getElementById("product-price").innerHTML = product.romRespones[i].productPropertyRespones[0].priceString;
+                    document.getElementById("idProductProper").value = product.romRespones[i].productPropertyRespones[0].id
+                    document.getElementById("quantityProduct").value = product.romRespones[i].productPropertyRespones[0].quantity;
+                    document.getElementById("quantityCart").value = 1;
+                    if(product.romRespones[i].productPropertyRespones[0].pricePromotion > 0){
+                        document.getElementById("product-promotion").innerHTML = product.romRespones[i].productPropertyRespones[0].pricePromotionString;
+                        document.getElementById("product-promotionPrice").value = product.romRespones[i].productPropertyRespones[0].pricePromotion;
+                    }else {
+                        document.getElementById("product-promotionPrice").value = product.romRespones[i].productPropertyRespones[j].price;
+                    }
+                    colorRom.innerHTML += '<li>\n' +
+                        '<a onclick="changeColor( \''+ product.romRespones[i].productPropertyRespones[j].color+  '\' , ' +  product.romRespones[i].id + ')" style="background : '+ product.romRespones[i].productPropertyRespones[j].color + '"  title="' + product.romRespones[i].productPropertyRespones[j].color +' "></a>\n' +
+                        '</li>'
+                }
+            }
+        }
+    }
+
+    function changeColor(color , idRom){
+        for (let i = 0; i < product.romRespones.length; i++) {
+            if(parseInt(product.romRespones[i].id) === parseInt(idRom)){
+                for (let j = 0; j < product.romRespones[i].productPropertyRespones.length; j++) {
+                    if(color === product.romRespones[i].productPropertyRespones[j].color){
+                        document.getElementById("quantityCart").value = 1;
+                        document.getElementById("quantityProduct").value = product.romRespones[i].productPropertyRespones[j].quantity;
+                        document.getElementById("idProductProper").value = product.romRespones[i].productPropertyRespones[j].id
+                        document.getElementById("product-price").innerHTML = product.romRespones[i].productPropertyRespones[j].priceString;
+                        if(product.romRespones[i].productPropertyRespones[j].pricePromotion > 0){
+                            document.getElementById("product-promotion").innerHTML = product.romRespones[i].productPropertyRespones[j].pricePromotionString;
+                            document.getElementById("product-promotionPrice").value = product.romRespones[i].productPropertyRespones[j].pricePromotion;
+                        }else {
+                            document.getElementById("product-promotionPrice").value = product.romRespones[i].productPropertyRespones[j].price;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    function addCart(){
+        console.log(document.getElementById("quantityCart").value)
+        console.log(document.getElementById("idProductProper").value)
+        console.log($('#quantityProduct').val() + '     a')
+        let data = {
+            "idProduct" : document.getElementById("idProductProper").value,
+            "quantityCart" : document.getElementById("quantityCart").value
+        }
+        console.log(document.getElementById("sizeCart").innerHTML)
+        let size =  Number(document.getElementById("sizeCart").innerHTML) + 1;
+
+        $.ajax({
+            url: '/api/cart',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            dataType: 'json',
+            success: function (result) {
+                toastSuccess("Thành công","Thêm giỏ hàng thành công");
+                console.log(result);
+            },
+            error: function (error) {
+                console.log(error)
+                if(error.responseText === "ok"){
+                    toastSuccess("Thành công","Thêm giỏ hàng thành công ");
+                    document.getElementById("sizeCart").innerHTML = size;
+
+                    let priceProduct = document.getElementById("product-promotionPrice");
+                    if(priceProduct !== undefined || priceProduct !== null){
+
+                        let newTotal = Number(document.getElementById("totalCartPrice").innerHTML) + Number(document.getElementById("product-promotionPrice").value)
+                        document.getElementById("totalCartPrice").innerHTML = newTotal;
+
+                        document.getElementById("totalCart").innerHTML = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(newTotal);
+                    }
+
+                }else if(error.responseText === "sl"){
+                    toastDanger("Thất bại","Số lượng sản phẩm quá nhiều");
+                }else {
+                    toastDanger("Thất bại",error.responseText);
+                }
+
+
+            }
+        })
+    }
+</script>
+</body>
+</html>
+
+

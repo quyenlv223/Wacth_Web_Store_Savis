@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/weblayout}"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title >Giỏ hàng</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+</head>
+<body layout:fragment="content">
+<!-- breadcrumb area start -->
+<!-- breadcrumb area start -->
+<div class="breadcrumb-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="breadcrumb-wrap">
+                    <nav aria-label="breadcrumb">
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/home">Trang chủ</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Giỏ hàng</li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- breadcrumb area end -->
+
+<div class="cart-main-wrapper">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <!-- Cart Table Area -->
+                <div class="cart-table table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th class="pro-thumbnail">Ảnh</th>
+                            <th class="pro-title">Tên sản phẩm</th>
+                            <th class="pro-rom">Bộ nhớ trong</th>
+                            <th class="pro-color">Màu</th>
+                            <th class="pro-price">Giá</th>
+                            <th class="pro-quantity">Số lượng</th>
+                            <th class="pro-subtotal">Tổng tiền</th>
+                            <th class="pro-remove">Xóa</th>
+                        </tr>
+                        </thead>
+                        <tbody id="bodyCart">
+                        <tr th:if="${listCart.size() == 0}">
+                            <td colspan="8">Chưa có sản phẩm nào trong giỏ hàng</td>
+                        </tr>
+                        <th:block th:each="cart : ${listCart}">
+                            <tr th:id="${cart.getId()}" class="tr-product">
+                                <td class="pro-thumbnail"><a href="#"><img class="img-fluid" th:src="${cart.getImgProduct()}"
+                                                                           alt="Product"/></a></td>
+                                <td class="pro-title"><a th:href="@{product/{id}(id=${cart.getIdProduct()})}" href="#" th:text="${cart.nameProduct}"></a></td>
+                                <td class="pro-rom"><span th:text="${cart.getRom()}"></span></td>
+
+                                <td class="pro-color"><span th:text="${cart.color}"></span></td>
+                                <td class="pro-price" th:if="${cart.getPriceProductPromotion() == 0}"><span th:text="${cart.getPriceProductString()}"></span>
+                                    <span th:text="${cart.getPriceProduct()}" hidden></span>
+                                </td>
+                                <td class="pro-price" th:if="${cart.getPriceProductPromotion() > 0}"><del><span th:text="${cart.getPriceProductString()}"></span></del>
+                                    <span th:text="${cart.getPriceProduct()}" hidden></span> <span th:text="${cart.getPriceProductPromotionString()}"></span>
+                                    <span th:text="${cart.getPriceProductPromotion()}" hidden></span>
+                                </td>
+
+                                <td class="pro-quantity">
+                                    <div class="pro-qty1"><input th:id="'cart' + ${cart.getId()}" type="text" th:value="${cart.getQuantity()}">
+                                                        <input hidden th:id="'product' + ${cart.getId()}" th:value="${cart.getQuantityProduct()}">
+                                    </div>
+                                </td>
+                                <td class="pro-subtotal"><span th:text="${cart.getTotalString()}">$295.00</span>
+                                <span hidden th:text="${cart.getTotal()}"></span>
+                                </td>
+                                <td class="pro-remove"><a href="#" onclick="deleteCart(this)"><i class="fa fa-trash-o"></i></a></td>
+                            </tr>
+                        </th:block>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Cart Update Option -->
+                <div class="cart-update-option d-block d-md-flex justify-content-between">
+                    <div class="cart-update mt-sm-16">
+                        <button class="sqr-btn" onclick="updateCart()">Cập nhật giỏ hàng</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-5 ml-auto">
+                <!-- Cart Calculation Area -->
+                <div class="cart-calculator-wrapper">
+                    <div class="cart-calculate-items">
+                        <h3>Tổng tiền giỏ hàng</h3>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <tr>
+                                    <td>Tổng số tiền sản phẩm</td>
+                                    <td th:text="${tong}">$230</td>
+                                </tr>
+                                <tr>
+                                    <td>Giảm giá</td>
+                                    <td>0đ</td>
+                                </tr>
+                                <tr class="total">
+                                    <td>Tổng tiền</td>
+                                    <td class="total-amount" id="totalCart" th:text="${tong}"></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <a href="order" class="sqr-btn d-block">Tới trang thanh toán</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- product details wrapper end -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.4/sockjs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+<!--<script th:src="@{/assets/js/listproduct.js}"></script>-->
+<!-- brand area end -->
+
+<script th:inline="javascript">
+    let listCart = [[${listCart}]];
+    console.log(listCart)
+    function deleteCart(e){
+        console.log(e.parentNode.parentNode.id)
+        var id = e.parentNode.parentNode.id;
+         e.parentNode.parentNode.parentNode.removeChild(e.parentNode.parentNode)
+        $.ajax({
+            url: '/api/cart/' + id,
+            type: 'DELETE',
+            contentType: 'application/json',
+            success: function (result) {
+                toastSuccess("Thành công","Đã xóa sản phẩm khỏi giỏ hàng");
+            },
+            error: function (error) {
+                toastDanger("Thất bại","Lỗi hệ thống, xóa sản phẩm thất bại");
+            }
+        })
+    }
+
+    function updateCart() {
+        let lstDetails = [];
+        let getTrProduct = document.getElementsByClassName('tr-product');
+        if(getTrProduct.length === 0){
+            toastDanger("Thất bại","Bạn chưa có sản phẩm nào trong giỏ hàng");
+        }
+        for (const $tr of getTrProduct) {
+            console.log($tr.id)
+            console.log($tr.childNodes[13])
+            let quantity = $tr.childNodes[11].childNodes[1].childNodes[1].value;
+            if(Number(quantity) === 0){
+                toastDanger("Thất bại","Số lượng sản phẩm phải lơn hơn 0");
+                return;
+            }
+            if(Number(quantity) > 5){
+                toastDanger("Thất bại","Số lượng sản phẩm phải nhỏ hơn 5");
+                return;
+            }
+            lstDetails.push({
+                "quantity" : quantity,
+                "id" : $tr.id
+            });
+        }
+        if(lstDetails.length === 0){
+            toastDanger("Thất bại","Cập nhập giỏ hàng thất bại");
+            return;
+        }
+
+        $.ajax({
+            url: '/api/cart/',
+            type: 'PUT',
+            contentType: 'application/json',
+            data: JSON.stringify(lstDetails),
+            success: function (result) {
+                console.log(result);
+                if(Number(result) > 0){
+                    toastSuccess("Thông báo","Đã xóa " + result + " sản phẩm do cửa hàng đã ngừng kinh doanh những sản phẩm này");
+                }else {
+                    toastSuccess("Thông báo", "Cập nhật thành công giỏ hàng");
+                }
+                setTimeout(function () {
+                    location.reload();
+                }, 2000)
+            },
+            error: function (error) {
+                toastDanger("Thất bại","Lỗi hệ thống, cập nhật giỏ hàng thất bại");
+            }
+        })
+
+
+
+    }
+</script>
+
+
+</body>
+</html>
+
+
