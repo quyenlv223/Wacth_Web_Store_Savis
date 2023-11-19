@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"><head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="Premium Multipurpose Admin & Dashboard Template" name="description">
+    <meta content="Themesbrand" name="author">
+    <title></title>
+
+    <!-- App favicon -->
+    <link rel="shortcut icon" th:href="@{/assets/img/logo.png}">
+
+    <!-- Bootstrap Css -->
+    <link th:href="@{/assets/css/bootstrap.min.css}" id="bootstrap-style" rel="stylesheet" type="text/css">
+    <!-- Icons Css -->
+    <link th:href="@{/assets/css/icons.min.css}" rel="stylesheet" type="text/css">
+    <!-- App Css-->
+    <link th:href="@{/assets/css/app.min.css}" id="app-style" rel="stylesheet" type="text/css">
+    <!-- Font Awesome 5.15.4 -->
+    <link th:href="@{/assets/css/fontawesome.min.css}" rel="stylesheet" />
+</head>
+<body>
+    <!-- Loader -->
+    <div id="preloader">
+        <div id="status"><div class="spinner"></div></div>
+    </div>
+
+    <!-- Begin page -->
+    <div class="accountbg"></div>
+    <div class="account-pages mt-5 pt-5">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-8 col-lg-5 col-xl-4">
+                    <!-- Header -->
+                    <div class="text-center position-relative mb-5" style="margin-top: -30px">
+                        <a href="/">
+                            <div><img src="https://cdn-icons-png.flaticon.com/512/809/809052.png" alt="" height="100"></div>
+                            <span style="font-size: 40px;color: yellow;">ClickPhone</span>
+                        </a>
+                    </div>
+
+                    <!-- Main content -->
+                    <div layout:fragment="body"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div></div>
+
+    <script th:src="@{/assets/js/jquery.min.js}"></script>
+    <!-- Cookies -->
+    <script th:src="@{/assets/js/js.cookie.min.js}"></script>
+    <script th:src="@{/assets/js/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{/assets/js/metisMenu.min.js}"></script>
+    <script th:src="@{/assets/js/simplebar.min.js}"></script>
+    <script th:src="@{/assets/js/waves.min.js}"></script>
+    <script th:src="@{/assets/js/app.js}"></script>
+    <script layout:fragment="script"></script>
+</body>
+</html>

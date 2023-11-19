@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/account}"
+>
+<head>
+    <title>Đăng nhập</title>
+</head>
+<body>
+<div layout:fragment="body">
+    <div class="card">
+        <div class="card-body">
+            <div class="d-flex p-3">
+                <div class="ms-auto text-end">
+                    <h4 class="font-size-20">Chào mừng bạn quay trở lại!</h4>
+                    <p class="text-muted mb-0 fst-italic">Đăng nhập để tiếp tục đến ClickPhone.</p>
+                </div>
+            </div>
+            <div class="w-100 d-flex pl-3">
+                <div class="w-100 m-0" id="message" style="display: none" role="alert">
+                    Thông tin đăng nhập không chính xác!
+                </div>
+            </div>
+            <div class="p-3">
+                <form class="form-horizontal" th:action="@{/login-check}" method="post">
+                    <div class="mb-3">
+                        <label class="form-label font-size-18 fw-bolder text-secondary" for="username">Email</label>
+                        <input type="text" class="form-control" name="username" id="username" placeholder="Nhập email">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label font-size-18 fw-bolder text-secondary" for="userpassword">Mật khẩu</label>
+                        <input type="password" class="form-control" name="password" id="userpassword" placeholder="Nhập mật khẩu">
+                    </div>
+
+                    <div class="row mt-4">
+                        <div class="col-sm-6">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="remember" id="remember">
+                                <label class="form-check-label" for="remember">
+                                    Nhớ tài khoản
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 text-end">
+                            <button class="btn btn-primary w-md waves-effect waves-light" id="btnLogin" type="button">Đăng nhập</button>
+                        </div>
+                    </div>
+
+                    <div class="mb-0 row">
+                        <div class="col-12 mt-4 text-center">
+                            <a href="/forgot-password" class="text-muted"><i class="mdi mdi-lock"></i> Quên mật khẩu?</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="mt-5 text-center position-relative">
+        <p class="text-white-50">© ClickPhone <span class="d-none d-sm-inline-block"> - Work by <i class="mdi mdi-heart text-danger"></i></span></p>
+    </div>
+</div>
+<script layout:fragment="script">
+
+    $(document).ready(function () {
+        const email = $('#username');
+        const messageFail = "[[${param.status}]]";
+        const typingEmail = "[[${session.emailLogin}]]";
+        if (messageFail === 'login_false') {
+            $('#message').addClass("alert alert-danger").html(`<i class="fas fa-times-circle fs-5 me-2"></i><span>Thông tin đăng nhập không chính xác!</span>`).show();
+        }
+        if (typingEmail !== '') {
+            email.val(typingEmail);
+        }
+
+        email.val(Cookies.get('email'));
+        $('#remember').prop("checked", true);
+
+        // Submit by key press Enter
+        $('form').keypress((e) => {
+            if (e.which === 13) {
+                $('#btnLogin').click();
+            }
+        })
+    });
+
+    function validate() {
+        const patternEmail = /^\b[A-Z0-9._%-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b$/i;
+        const email = $('#username');
+
+        // Email
+        if (!patternEmail.test(email.val())) {
+            $('#message').addClass("alert alert-danger").html(`<i class="fas fa-times-circle fs-5 me-2"></i><span>Email không hợp lệ!</span>`).show();
+            return false;
+        }
+        return true;
+    }
+
+    // Login Submit
+    $('#btnLogin').click(function (){
+        if (validate()) {
+            // Save data to cookie if checked
+            if ($('#remember').prop("checked")) {
+                Cookies.set('email', $('#username').val());
+                Cookies.set('remember', 'checked');
+            }
+            checkCountLoginFalse();
+        }
+    });
+
+    function checkCountLoginFalse(){
+        const message = $('#message');
+        const email = $('#username').val();
+
+        $.ajax({
+            url: `/api/count_login_false?email=${email}`,
+            type: 'GET',
+            success: function (data) {
+                $('form').submit();
+            },
+            error: function (data) {
+                console.log(data)
+                message.addClass("alert alert-danger").html(`<i class="fas fa-times-circle fs-5 me-2"></i><span>${data.responseText}</span>`).show();
+            }
+        });
+    }
+</script>
+</body>
+</html>

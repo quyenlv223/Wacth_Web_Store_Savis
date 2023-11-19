@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout/weblayout}" xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<head>
+    <title>Trang chủ</title>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.2.0/css/datepicker.min.css"
+        rel="stylesheet">
+    <script th:src="@{/system/datepicker.min.js}"></script>
+
+
+    <!-- Link CSS 2-->
+    <link href="https://fonts.gstatic.com" rel="preconnect">
+    <link
+        href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+        rel="stylesheet">
+
+
+</head>
+
+<body>
+    <div layout:fragment="content" class="myContainer">
+
+        <main id="main" class="main">
+            <div class="row w-100" style="width: 100%; height: 100px;">
+                <div class="col-lg-4" style="background-color: cornflowerblue;">Tổng đơn
+                    <h1 id="totalOrder"></h1>
+                </div>
+                <div class="col-lg-4" style="background-color: gold;">Đang thực hiện
+                    <h1 id="processOrder"></h1>
+                </div>
+                <div class="col-lg-4" style="background-color:lawngreen">Đã hoàn thành
+                    <h1 id="complateOrder"></h1>
+                </div>
+            </div>
+            <div class="pagetitle">
+                <h1>Top sản phẩm bán chạy trong tháng</h1>
+            </div><!-- End Page Title -->
+
+            <section class="section">
+                <div class="row">
+                    <div class="col-lg-12" id="rightKH">
+
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row mt-3">
+                                    <p style="width: 100px;margin-bottom: 0px;padding-top: 5px">Thời gian: </p>
+                                    <input type="text" class="form-control" style="width: 150px; margin-top: -10px"
+                                        name="datepicker" id="datepicker" />
+                                    <button style="width: 110px; margin-left: 20px" class="btn btn-primary"
+                                        onclick="onLoadTopProductSaleByMonth()">Tìm kiếm
+                                    </button>
+                                    <button style="width: 110px; margin-left: 20px" class="btn btn-primary"
+                                        onclick="exportOnnLoadTopProductSaleByMonth()">Xuất file
+                                    </button>
+                                </div>
+                                <div class="table-responsive mt-4">
+                                    <table class="table table-hover mb-0 table-borderless">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Top</th>
+                                                <th scope="col">Hình ảnh</th>
+                                                <th scope="col">Tên sản phẩm</th>
+                                                <th scope="col">Màu sản phẩm</th>
+                                                <th scope="col">Bộ nhớ trong</th>
+                                                <th scope="col">Giá</th>
+                                                <th scope="col">Tổng số lượng bán</th>
+                                                <th scope="col">Tổng giá</th>
+                                                <th scope="col">Ngày mua hàng</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="topProductSaleByMonth">
+
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </section>
+            <div class="card shadow-2-strong" style="width: 32rem;">
+                <div class="card-body">
+                    <p class="text-uppercase mb-2"><strong>performance</strong></p>
+                    <hr />
+                    <canvas
+                            data-mdb-chart="bar"
+                            data-mdb-dataset-label="Tổng đơn theo tháng"
+                            data-mdb-labels="['Jul', 'Aug' , 'Sep' , 'Oct' , 'Nov' , 'Dec']"
+                            data-mdb-dataset-data="[212, 183, 165, 193, 265, 221]">
+                    </canvas>
+                </div>
+            </div>
+
+        </main><!-- End #main -->
+
+
+        <!-- CSS 2-->
+        <!-- Vendor CSS Files -->
+        <link th:href="@{assets/ckeditor/vendor/bootstrap/css2/bootstrap.min.css}" rel="stylesheet">
+        <link th:href="@{assets/ckeditor/vendor/bootstrap-icons/bootstrap-icons.css}" rel="stylesheet">
+        <link th:href="@{assets/ckeditor/vendor/boxicons/css/boxicons.min.css}" rel="stylesheet">
+        <link th:href="@{assets/ckeditor/vendor/quill/quill.snow.css}" rel="stylesheet">
+        <link th:href="@{assets/ckeditor/vendor/quill/quill.bubble.css}" rel="stylesheet">
+        <link th:href="@{assets/ckeditor/vendor/remixicon/remixicon.css}" rel="stylesheet">
+        <link th:href="@{assets/ckeditor/vendor/simple-datatables/style.css}" rel="stylesheet">
+        <!-- Template Main CSS File -->
+        <link th:href="@{assets/css2/style.css}" rel="stylesheet">
+
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="https://momentjs.com/downloads/moment.js"></script>
+        <script>
+            const ctx02 = document.getElementById('chartContainer');
+            const myChart02 = new Chart(ctx02, {
+                type: 'line',
+                data: {
+                    labels: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
+                    datasets: [{
+                        label: 'Lợi nhuận',
+                        data: [],
+                        borderColor: 'rgb(82, 0, 255)',
+                    }]
+                },
+                options: {
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        responsive: true,
+                        maintainAspectRatio: false
+                    }
+                }
+            });
+
+        </script>
+        <script>
+            let now = new Date()
+            $("#datepicker").datepicker({
+                format: "mm-yyyy",
+                startView: "months",
+                minViewMode: "months"
+            })
+
+            document.getElementById('datepicker').value = ((now.getMonth() + 1) < 10 ? ('0' + (now.getMonth() + 1)) : (now.getMonth() + 1)) + '-' + now.getFullYear()
+            getTopProductSaleByMonth((now.getMonth() + 1), now.getFullYear())
+
+            function onLoadTopProductSaleByMonth() {
+                let monthVal = document.getElementById('datepicker').value;
+                let month = monthVal.substring(0, 2)
+                let year = monthVal.substring(3, monthVal.length)
+                getTopProductSaleByMonth(month, year)
+            }
+            function exportOnnLoadTopProductSaleByMonth() {
+                let monthVal = document.getElementById('datepicker').value;
+                let month = monthVal.substring(0, 2)
+                let year = monthVal.substring(3, monthVal.length)
+                downloadFileXML(month, year)
+            }
+            function bca() {
+                let monthVal = document.getElementById('datepicker').value;
+                let month = monthVal.substring(0, 2)
+                let year = monthVal.substring(3, monthVal.length)
+                abc(month, year)
+            }
+
+            function getStatisProfit(year) {
+                $.ajax({
+                    url: '/statis-profit?year=' + year,
+                    success: function (datas) {
+                        let dataChart = new Array();
+                        for (let i = 1; i <= 12; i++) {
+                            dataChart.push({
+                                month: i,
+                                profit: getProfitMonth(i, datas)
+                            })
+                        }
+                        console.log(dataChart)
+                        myChart02.data.datasets[0].data = new Array();
+                        for (let profit of dataChart) {
+                            myChart02.data.datasets[0].data.push(profit.profit);
+                        }
+
+                        console.log(myChart02.data.datasets[0].data)
+                        myChart02.update();
+
+                    },
+                    error: function (error) {
+                        console.log(error)
+                    }
+                })
+            }
+
+            function getProfitMonth(i, datas) {
+                let profit = 0;
+                for (let data of datas) {
+                    if (data.month == i) {
+                        profit = data.profit;
+                        break;
+                    }
+                }
+                return profit;
+            }
+            function getTopProductSaleByMonth(month, year) {
+                $.ajax({
+                    url: '/top-product-sale/' + month + '/' + year,
+                    success: function (datas) {
+                        console.log(datas)
+                        let topProductSaleByMonth = document.getElementById("topProductSaleByMonth")
+                        topProductSaleByMonth.innerHTML = ''
+                        for (let data of datas) {
+                            topProductSaleByMonth.innerHTML +=
+                                '<tr>\n' +
+                                '                                                <th scope="row">' + (datas.indexOf(data) + 1) + '</th>\n' +
+                                '                                                <td>\n' +
+                                '                                                    <div>\n' +
+                                '                                                        <img src="' + data.img + '" alt="" class="avatar-xs rounded-circle me-2">' +
+                                '                                                    </div>\n' +
+                                '                                                </td>\n' +
+                                '                                                <td>' + data.nameProduct + '</td>\n' +
+                                '                                                <td>' + data.colorProduct + '</span></td>\n' +
+                                '                                                <td>' + data.romProduct + '</span></td>\n' +
+                                '                                                <td>' + data.priceProduct.toLocaleString('vi-VN') + ' đ' + '</td>\n' +
+                                '                                                <td>' + data.quantityDaBan + '</td>\n' +
+                                '                                                <td>' + data.totalPrice.toLocaleString('vi-VN') + ' đ' + '</td>\n' +
+                                '                                                <td>' + moment(data.dateOrder).format('DD-MM-YYYY') + '</td>\n' +
+                                '                                            </tr>'
+                        }
+                    },
+                    error: function (error) {
+                        console.log(error)
+                    }
+                })
+            }
+            async function downloadFileXML(month, year, method = "GET", body) {
+                method = "GET", body
+                // url: url request
+                // fileName: tên file download kèm đuôi
+                var url = '/export-list/' + month + '/' + year;
+                var fileName = 'TOP_10_SẢN_PHẨM_BÁN_CHẠY_TRONG_THÁNG_' + month + '/' + year + ' .xlsx';
+                return new Promise((resolve, reject) => {
+                    const xhr = new XMLHttpRequest();
+                    xhr.open(method, url, true);
+                    xhr.responseType = 'blob';
+                    xhr.onload = function () {
+                        if (xhr.readyState === XMLHttpRequest.DONE) {
+                            if (xhr.status === 200) {
+                                const urlCreator = window.URL || window.webkitURL;
+                                const imageUrl = urlCreator.createObjectURL(this.response);
+                                console.log(imageUrl)
+                                const tag = document.createElement('a');
+                                tag.href = imageUrl;
+                                tag.download = fileName && fileName.toLowerCase();
+                                document.body.appendChild(tag);
+                                tag.click();
+                                document.body.removeChild(tag);
+                                toastSuccess("Thành công", "Xuất file thành công!");
+                            } else {
+                                toastDanger("Thất bại", "Lỗi hệ thống");
+
+                            }
+                        } else {
+                            toastDanger("Thất bại", "Lỗi hệ thống");
+                        }
+                    };
+                    xhr.send(body);
+                });
+            }
+            async function staticticOrder() {
+                try {
+                    $.ajax({
+                        url: '/statictic',
+                        success: function (datas) {
+                            document.getElementById("totalOrder").innerHTML = datas.total;
+                            document.getElementById("processOrder").innerHTML = datas.process;
+                            document.getElementById("complateOrder").innerHTML = datas.complete;
+                        },
+                        error: function (error) {
+                            console.log(error)
+                        }
+                    })
+
+                } catch (error) {
+                    console.log('ERROR: ', error)
+                }
+            }
+
+            window.onload = function () {
+                staticticOrder();
+            };
+        </script>
+    </div>
+</body>
+
+</html>

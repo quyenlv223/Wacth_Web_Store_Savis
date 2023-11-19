@@ -1,0 +1,568 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/weblayout}"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Quản lý ram - PolyWatch</title>
+</head>
+
+<body>
+<div layout:fragment="content" class="container-fluid">
+    <main id="main" class="main">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-lg-2 h-100" id="leftKH">
+            <h1 class="heading-page">Ram</h1>
+<!--            <div class="card" id="formLeft">-->
+<!--                <h3 class="leftTitle" style="margin-top: 10px">Loại màn</h3>-->
+<!--                <div class="boxLeftC">-->
+<!--                    <select class="roleFilter w-100" multiple style="width: 100%" onchange="onRoleChange(this)">-->
+<!--                        <option value="Nhỏ gọn">Nhỏ gọn</option>-->
+<!--                        <option value="Lớn hơn 6 inch">Lớn hơn 6 inch</option>-->
+<!--                        <option value="Màn hình gập">Màn hình gập</option>-->
+<!--                    </select>-->
+<!--                </div>-->
+<!--                <div style="border: 1px solid #e3e3e3;margin: 12px 12px;border-radius: 8px;">-->
+<!--                </div>-->
+
+<!--            </div>-->
+        </div>
+        <!-- End-Sidebar -->
+        <div class="col-lg-10" id="rightKH">
+            <div class="row justify-content-end">
+                <button type="button" class="btn btn-primary col-auto mb-3 me-2 waves-effect waves-light" data-bs-toggle="modal" data-bs-target=".modal-add-staff">
+                    <i class="fas fa-plus me-2"></i>Ram
+                </button>
+            </div>
+            <div class="card">
+                <div class="card-body overflow-auto">
+                    <table id="datatable"
+                           class="table table-striped table-hover table-bordered nowrap dataTable no-footer shadow"
+                           style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                        <thead class="text-center">
+                        <th>STT</th>
+                        <th>Chức năng</th>
+                        <th>Tên ram</th>
+                        </thead>
+                        <tbody style="vertical-align: middle;">
+                        <tr th:each="ram, iterator : ${list}">
+                            <td class="text-center info-index">
+                                 <span th:text="${iterator.index + 1}"></span>
+                            </td>
+                            <td class="text-center">
+                                <i class="col-4 fas fa-edit" style="color: darkblue;" title="Cập nhật" onclick="onBtnEdit(this)"></i>
+                                <i class="col-4 fas fa-user-times" style="color: red;" title="Xoá loại ram" onclick="onBtnDelete(this)"></i>
+                            </td>
+
+
+                            <input type="hidden" class="check-item" th:value="${ram.getId()}">
+
+                            <td th:text="${ram.name} + ' GB'">Họ tên</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Add Staff -->
+    <div class="modal fade modal-add-staff" tabindex="-1" style="display: none;" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title mt-0">Thêm ram</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="formAdd">
+                    <div class="modal-body">
+                        <div class="row">
+                                <table class="table-borderless w-100">
+                                    <tr>
+                                        <th style="width: 140px"><label class="form-label" for="name">Tên Ram</label><span class="required"> *</span></th>
+                                        <td><input class="form-control" type="text" name="name" id="name" onblur="onType(this)"></td>
+                                    </tr>
+                                </table>
+                        </div>
+                    </div>
+                </form>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="resetForm()">
+                        <i class="fas fa-ban me-2"></i>Đóng
+                    </button>
+                    <button type="button" class="btn btn-success" onclick="resetForm()">
+                        <i class="fa fa-trash me-2"></i>Làm mới
+                    </button>
+                    <button type="button" id="btnAdd" class="btn btn-primary waves-effect waves-light">
+                        <i class="fas fa-save pe-2"></i>Lưu
+                    </button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- End Modal Add Staff -->
+
+    <!-- Modal Edit Staff -->
+    <div class="modal fade modal-edit-staff" tabindex="-1" style="display: none;" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title mt-0">Cập nhật ram</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="formEdit">
+                    <div class="modal-body">
+                        <div class="row">
+                                <table class="table-borderless w-100">
+                                    <tr>
+                                        <th><label class="form-label" for="name-edit">Tên ram</label><span class="required"> *</span></th>
+                                        <td><input class="form-control" type="text" name="name" id="name-edit" onblur="onType(this)"></td>
+                                    </tr>
+                                </table>
+                        </div>
+                    </div>
+                    <input type="hidden" name="id" id="id-edit">
+
+                </form>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="resetForm()">
+                        <i class="fas fa-ban me-2"></i>
+                        Đóng
+                    </button>
+                    <button type="button" class="btn btn-success" onclick="resetForm()">
+                        <i class="fa fa-trash me-2"></i>
+                        Làm mới
+                    </button>
+                    <button type="button" id="btnEdit" class="btn btn-primary waves-effect waves-light">
+                        <i class="fas fa-save pe-2"></i>
+                        Lưu
+                    </button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- End Modal Edit Staff -->
+    </main>
+</div>
+
+<script layout:fragment="script" >
+
+    $(document).ready(function () {
+        $('.roleFilter').chosen();
+        hoverIconLock();
+    });
+
+    // resize datatable and remark index row table
+    function resizeTable() {
+        $('th.header-name:first').click();
+        $('th.header-name:first').click();
+        $('th.header-name:first').click();
+
+        $('#datatable tbody tr:not(:hidden) .info-index').each(function (index) {
+            $(this).text(index + 1);
+        });
+    }
+
+
+
+    $('.arrow').click(function (e) {
+        $(this).toggleClass('down');
+        $(this).siblings('.expand').toggle();
+    })
+
+    $('.check-item').change(function (e) {
+        const flag = checkSiblings();
+
+        if (flag) {
+            $('#checkAll').prop('checked', true);
+        } else {
+            $('#checkAll').prop('checked', false);
+        }
+
+        function checkSiblings() {
+            const checkboxes = $('.check-item').parent().find('input[type="checkbox"]');
+            let checkFlag = true;
+
+            checkboxes.each(function () {
+                if ($(this).prop("checked") === false) {
+                    checkFlag = false;
+                }
+            });
+            return checkFlag;
+        }
+    });
+
+    // disable mousewheel on a input number field when in focus
+    // (to prevent Chromium browsers change the value when scrolling)
+    $('form').on('focus', 'input[type=number]', function (e) {
+        $(this).on('wheel.disableScroll', function (e) {
+            e.preventDefault()
+        })
+    })
+    $('form').on('blur', 'input[type=number]', function (e) {
+        $(this).off('wheel.disableScroll')
+    })
+
+
+
+    // event filter table by role
+    function onRoleChange() {
+        const role = $('select.roleFilter').val();
+        const rows = $('table#datatable tr');
+
+        if (role.length === 0) {
+            rows.show();
+        } else {
+            rows.hide();
+            role.forEach(e => {
+                rows.find(`.role:contains(${e})`).parent().parent().show();
+            })
+        }
+        resizeTable();
+    }
+
+    // event reset form
+    function resetForm() {
+        // Reset form input
+        const formInput = $("form :input");
+        formInput.val("");
+        $('#role').prop('selectedIndex', 0);
+        formInput.removeClass('error');
+
+        // Reset input file
+        $('#img-temp').attr('src', base64Image);
+    }
+
+    // Submit formAdd
+    $('#btnAdd').click(function () {
+        let data = {};
+        let formData = $('#formAdd').serializeArray();
+        console.log(formData);
+        $.each(formData, function (i, v) {
+            data["" + v.name + ""] = v.value;
+            console.log(v.name);
+            console.log(v.value);
+        });
+        console.log(data);
+
+
+        if(validateForm('add')) {
+            addStaff(data);
+        } else {
+            console.log("validate fail");
+        }
+    });
+
+    // Event onKeyPress formAdd
+    function onType(element) {
+        const tag = $(element);
+        if(tag.val() === '') {
+            tag.addClass('error');
+        } else {
+            tag.removeClass('error');
+        }
+    }
+
+    // Event onBlur for input date
+    $('#birthdate').blur(function () {
+        setTimeout(function(){
+            onType($('#birthdate'));
+        }, 100); // delay 500 ms
+    });
+
+    // Event onBlur for input date
+    $('#birthdate-edit').blur(function () {
+        setTimeout(function(){
+            onType($('#birthdate-edit'));
+        }, 100); // delay 500 ms
+    });
+
+    // Validation formAdd
+    function validateForm(type) {
+        let errorMessage = '';
+        const name = (type === 'add') ? $('#name') : $('#name-edit');
+        let flag = true;
+
+        if (name.val() === '') {
+            name.addClass('error');
+            flag = false;
+        }
+
+
+
+        const loai = (type === 'add') ? $('#loai') : $('#loai-edit');
+        if (loai.val() === null) {
+            loai.addClass('error');
+            flag = false;
+        }
+
+
+        if (flag) {
+            return true
+        }
+        errorMessage += 'Mời nhập lại!'
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        })
+        Toast.fire({
+            icon: 'error',
+            title: errorMessage
+        })
+        return false;
+    }
+
+    //API add Staff
+    function addStaff(data) {
+        $.ajax({
+            url: '/api/ram',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            dataType: 'json',
+            success: function (result) {
+                $('.modal-add-staff').modal('hide');
+                Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: 'Thêm thành công',
+                    showConfirmButton: true,
+                    timerProgressBar: true,
+                    timer: 2000
+                }).then(()=> window.location.reload());
+            },
+            error: function (error) {
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Lỗi khi thêm mới'
+                })
+            }
+        })
+    }
+
+    // Submit formEdit
+    $('#btnEdit').click(function () {
+        let data = {};
+        let formData = $('#formEdit').serializeArray();
+        $.each(formData, function (i, v) {
+            data["" + v.name + ""] = v.value;
+        });
+
+        if(validateForm('edit')) {
+            editStaff(data);
+        } else {
+            console.log("validate fail");
+        }
+    });
+
+    //API edit Staff
+    function editStaff(data) {
+        $.ajax({
+            url: '/api/ram',
+            type: 'PUT',
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            dataType: 'json',
+            success: function (result) {
+                $('.modal-edit-staff').modal('hide');
+                Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: 'Cập nhật thành công',
+                    showConfirmButton: true,
+                    timerProgressBar: true,
+                    timer: 2000
+                }).then(()=> window.location.reload());
+            },
+            error: function (error) {
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+                Toast.fire({
+                    icon: 'error',
+                    title: "Lỗi hệ thống!\nVui lòng thử lại sau"
+                })
+            }
+        })
+    }
+
+    function onBtnEdit (element) {
+        const tag = $(element).parent().parent().find('.check-item');
+        $.ajax({
+            url: `/api/ram/${tag.val()}`,
+            type: 'GET',
+            contentType: 'application/json',
+            success: function (result) {
+                // Input image
+                $('#name-edit').val(result.name);
+                $('#id-edit').val(result.id);
+                $('.modal-edit-staff').modal('show');
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        })
+    }
+
+
+
+    function onBtnDelete (element) {
+        const tag = $(element).parent().parent();
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+                confirmButton: 'btn btn-success mx-2',
+                cancelButton: 'btn btn-danger mx-2'
+            },
+            buttonsStyling: false
+        })
+
+        swalWithBootstrapButtons.fire({
+            title: `Bạn chắc chắn muốn xoá <br> ram này chứ?`,
+            text: "Chú ý không thể hoàn tác sau khi thực hiện tác vụ này!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Vâng, tôi chắc chắn!',
+            cancelButtonText: 'Không, huỷ bỏ tác vụ!',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                swalWithBootstrapButtons.fire(
+                    'Đã xoá thành công!',
+                    'Dữ liệu đã bị xoá.',
+                    'success'
+                ).then(
+                    $.ajax({
+                        url: `/api/ram/${tag.find('.check-item').val()}`,
+                        type: 'DELETE',
+                        contentType: 'application/json',
+                        success: function (result) {
+                            window.location.href = "/ram";
+                        },
+                        error: function (error) {
+                            console.log(error);
+                        }
+                    })
+                );
+            } else if (
+                result.dismiss === Swal.DismissReason.cancel
+            ) {
+                swalWithBootstrapButtons.fire(
+                    'Đã huỷ tác vụ',
+                    'Dữ liệu được bảo toàn :)',
+                    'error'
+                )
+            }
+        })
+    }
+
+    // JavaScript: Chuyển tiếng Việt có dấu sang không dấu
+    function convertViToEn(str, toUpperCase = false) {
+        str = str.toLowerCase();
+        str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a");
+        str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e");
+        str = str.replace(/ì|í|ị|ỉ|ĩ/g, "i");
+        str = str.replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o");
+        str = str.replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u");
+        str = str.replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y");
+        str = str.replace(/đ/g, "d");
+        // Some system encode vietnamese combining accent as individual utf-8 characters
+        str = str.replace(/\u0300|\u0301|\u0303|\u0309|\u0323/g, ""); // Huyền sắc hỏi ngã nặng
+        str = str.replace(/\u02C6|\u0306|\u031B/g, ""); // Â, Ê, Ă, Ơ, Ư
+
+        return toUpperCase ? str.toUpperCase() : str;
+    }
+
+    /**
+     * Generate Username from fullname
+     */
+    function generateUsername(str) {
+        //Split to array of words
+        let arr = str.split(' ');
+        let username = arr[arr.length - 1];
+
+        // Remove firstname from array of fullname
+        arr.pop();
+
+        // Get the First Letter of each String
+        arr.forEach(e => username+=e.charAt(0));
+        if (arr.length === 1) {
+            return arr[0];
+        }
+        return username;
+    }
+
+    // On change Avatar
+    function onChangeAvatar(type) {
+        const allowedFiles = ["jpeg", "png"];
+        const file = $(`#img-file${type === 'edit' ? '-edit' : ''}`).prop('files')[0];
+        if (file) {
+            let found = false;
+            allowedFiles.forEach(function (extension) {
+                if (file.type.match('image/' + extension)) {
+                    found = true;
+                }
+            });
+            if (found) {
+                // Preview image
+                $(`#img-temp${type === 'edit' ? '-edit' : ''}`).attr('src', URL.createObjectURL(file));
+
+                // Adding value to input form
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onloadend = function() {
+                    $(`#img-base64${type === 'edit' ? '-edit' : ''}`).val(reader.result);
+                }
+            } else {
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                });
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Ảnh không hợp lệ!'
+                });
+            }
+        }
+    }
+</script>
+
+</body>
+</html>

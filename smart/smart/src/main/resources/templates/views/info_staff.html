@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>Thông tin cá nhân</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link th:href="@{/href=assets/img/favicon.png}" rel="icon">
+  <link th:href="@{/assets/img/apple-touch-icon.png}" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.gstatic.com" rel="preconnect">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link th:href="@{/assets/ckeditor/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+  <link th:href="@{/assets/ckeditor/vendor/bootstrap-icons/bootstrap-icons.css}" rel="stylesheet">
+  <link th:href="@{/assets/ckeditor/vendor/boxicons/css/boxicons.min.css}" rel="stylesheet">
+  <link th:href="@{/assets/ckeditor/vendor/quill/quill.snow.css}" rel="stylesheet">
+  <link th:href="@{/assets/ckeditor/vendor/quill/quill.bubble.css}" rel="stylesheet">
+  <link th:href="@{/assets/ckeditor/vendor/remixicon/remixicon.css}" rel="stylesheet">
+  <link th:href="@{/assets/ckeditor/vendor/simple-datatables/style.css}" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link th:href="@{/assets/css2/style.css}" rel="stylesheet">
+
+  <!-- =======================================================
+  * Template Name: NiceAdmin
+  * Updated: Sep 18 2023 with Bootstrap v5.3.2
+  * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+</head>
+
+<body>
+
+<!-- ======= Header ======= -->
+<header id="header" class="header fixed-top d-flex align-items-center">
+
+  <div class="d-flex align-items-center justify-content-between">
+    <a href="/" class="logo d-flex align-items-center">
+      <img th:src="@{/assets/img/logo.png}" alt="">
+      <span class="d-none d-lg-block">Nice - PolyWatch</span>
+    </a>
+    <i class="bi bi-list toggle-sidebar-btn"></i>
+  </div><!-- End Logo -->
+
+  <div class="search-bar">
+    <form class="search-form d-flex align-items-center" method="POST" action="#">
+      <input type="text" name="query" placeholder="Search" title="Enter search keyword">
+      <button type="submit" title="Search"><i class="bi bi-search"></i></button>
+    </form>
+  </div><!-- End Search Bar -->
+
+  <nav class="header-nav ms-auto">
+    <ul class="d-flex align-items-center">
+
+      <li class="nav-item d-block d-lg-none">
+        <a class="nav-link nav-icon search-bar-toggle " href="#">
+          <i class="bi bi-search"></i>
+        </a>
+      </li><!-- End Search Icon-->
+
+      <li class="nav-item dropdown">
+
+        <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
+          <i class="bi bi-bell"></i>
+          <span class="badge bg-primary badge-number">4</span>
+        </a><!-- End Notification Icon -->
+
+        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
+          <li class="dropdown-header">
+            You have 4 new notifications
+            <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
+          </li>
+          <li>
+            <hr class="dropdown-divider">
+          </li>
+
+          <li class="notification-item">
+            <i class="bi bi-exclamation-circle text-warning"></i>
+            <div>
+              <h4>Lorem Ipsum</h4>
+              <p>Quae dolorem earum veritatis oditseno</p>
+              <p>30 min. ago</p>
+            </div>
+          </li>
+
+          <li>
+            <hr class="dropdown-divider">
+          </li>
+
+          <li class="notification-item">
+            <i class="bi bi-x-circle text-danger"></i>
+            <div>
+              <h4>Atque rerum nesciunt</h4>
+              <p>Quae dolorem earum veritatis oditseno</p>
+              <p>1 hr. ago</p>
+            </div>
+          </li>
+
+          <li>
+            <hr class="dropdown-divider">
+          </li>
+
+          <li class="notification-item">
+            <i class="bi bi-check-circle text-success"></i>
+            <div>
+              <h4>Sit rerum fuga</h4>
+              <p>Quae dolorem earum veritatis oditseno</p>
+              <p>2 hrs. ago</p>
+            </div>
+          </li>
+
+          <li>
+            <hr class="dropdown-divider">
+          </li>
+
+          <li class="notification-item">
+            <i class="bi bi-info-circle text-primary"></i>
+            <div>
+              <h4>Dicta reprehenderit</h4>
+              <p>Quae dolorem earum veritatis oditseno</p>
+              <p>4 hrs. ago</p>
+            </div>
+          </li>
+
+          <li>
+            <hr class="dropdown-divider">
+          </li>
+          <li class="dropdown-footer">
+            <a href="#">Show all notifications</a>
+          </li>
+
+        </ul><!-- End Notification Dropdown Items -->
+
+      </li><!-- End Notification Nav -->
+
+      <li class="nav-item dropdown">
+
+        <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
+          <i class="bi bi-chat-left-text"></i>
+          <span class="badge bg-success badge-number">3</span>
+        </a><!-- End Messages Icon -->
+
+        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow messages">
+          <li class="dropdown-header">
+            You have 3 new messages
+            <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
+          </li>
+          <li>
+            <hr class="dropdown-divider">
+          </li>
+
+          <li class="message-item">
+            <a href="#">
+              <img src="assets/img/messages-1.jpg" alt="" class="rounded-circle">
+              <div>
+                <h4>Maria Hudson</h4>
+                <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
+                <p>4 hrs. ago</p>
+              </div>
+            </a>
+          </li>
+          <li>
+            <hr class="dropdown-divider">
+          </li>
+
+          <li class="message-item">
+            <a href="#">
+              <img src="assets/img/messages-2.jpg" alt="" class="rounded-circle">
+              <div>
+                <h4>Anna Nelson</h4>
+                <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
+                <p>6 hrs. ago</p>
+              </div>
+            </a>
+          </li>
+          <li>
+            <hr class="dropdown-divider">
+          </li>
+
+          <li class="message-item">
+            <a href="#">
+              <img src="assets/img/messages-3.jpg" alt="" class="rounded-circle">
+              <div>
+                <h4>David Muldon</h4>
+                <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
+                <p>8 hrs. ago</p>
+              </div>
+            </a>
+          </li>
+          <li>
+            <hr class="dropdown-divider">
+          </li>
+
+          <li class="dropdown-footer">
+            <a href="#">Show all messages</a>
+          </li>
+
+        </ul><!-- End Messages Dropdown Items -->
+
+      </li><!-- End Messages Nav -->
+
+      <li class="nav-item dropdown pe-3">
+
+        <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+          <img th:src="${session.user.avatar}" alt="Profile" class="rounded-circle">
+          <span th:text="${session.user.fullName}" class="d-none d-md-block dropdown-toggle ps-2"></span>
+        </a><!-- End Profile Iamge Icon -->
+
+        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+          <li class="dropdown-header">
+            <h6 th:text="${session.user.fullName}"></h6>
+            <span th:switch="${session.user.role}">
+                  <span th:case="'ROLE_ADMIN'">Quản lý</span>
+                  <span th:case="'ROLE_ACC'">Nhân viên kế toán</span>
+                  <span th:case="'ROLE_STOCK'">Nhân viên kiểm kho</span>
+                  <span th:case="'ROLE_USER'">Nhân viên bán hàng</span>
+            </span>
+          </li>
+          <li>
+            <hr class="dropdown-divider">
+          </li>
+          <li>
+            <a class="dropdown-item d-flex align-items-center" href="/staff/info_staff">
+              <i class="bi bi-person"></i>
+              <span>Thông tin</span>
+            </a>
+          </li>
+          <li>
+            <hr class="dropdown-divider">
+          </li>
+
+          <li>
+            <a class="dropdown-item d-flex align-items-center" href="/staff/info_staff">
+              <i class="bi bi-gear"></i>
+              <span>Đổi mật khẩu</span>
+            </a>
+          </li>
+          <li>
+            <hr class="dropdown-divider">
+          </li>
+          <li>
+            <a class="dropdown-item d-flex align-items-center"  href="/logout">
+              <i class="bi bi-box-arrow-right"></i>
+              <span>Đăng xuất</span>
+            </a>
+          </li>
+        </ul><!-- End Profile Dropdown Items -->
+      </li><!-- End Profile Nav -->
+
+    </ul>
+  </nav><!-- End Icons Navigation -->
+
+</header><!-- End Header -->
+
+<!-- ======= Sidebar ======= -->
+<aside id="sidebar" class="sidebar">
+
+  <ul class="sidebar-nav" id="sidebar-nav">
+    <li class="nav-item">
+      <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="/">
+        <i class="bi bi-menu-button-wide"></i><span>Tổng quan</span>
+      </a>
+    </li><!-- End Components Nav -->
+
+    <li class="nav-item">
+      <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
+        <i class="bi bi-journal-text"></i><span>Hàng hoá</span><i class="bi bi-chevron-down ms-auto"></i>
+      </a>
+      <ul id="forms-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+        <li>
+          <a th:href="@{/cate}">
+            <i class="bi bi-circle"></i><span>Danh Mục</span>
+          </a>
+        </li>
+        <li>
+          <a th:href="@{/product}">
+            <i class="bi bi-circle"></i><span>Sản phẩm</span>
+          </a>
+        </li>
+      </ul>
+    </li><!-- End Forms Nav -->
+
+    <li class="nav-item">
+      <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
+        <i class="bi bi-layout-text-window-reverse"></i><span>Thuộc tính</span><i class="bi bi-chevron-down ms-auto"></i>
+      </a>
+      <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+        <li>
+          <a th:href="@{/color}">
+            <i class="bi bi-circle"></i><span>Màu sắc</span>
+          </a>
+        </li>
+        <li>
+          <a th:href="@{/chip}">
+            <i class="bi bi-circle"></i><span>Chip</span>
+          </a>
+        </li>
+        <li>
+          <a th:href="@{/os}">
+            <i class="bi bi-circle"></i><span>Hệ điều hành</span>
+          </a>
+        </li>
+        <li>
+          <a th:href="@{/screen}">
+            <i class="bi bi-circle"></i><span>Màn hình</span>
+          </a>
+        </li>
+        <li>
+          <a th:href="@{/pin}">
+            <i class="bi bi-circle"></i><span>Pin</span>
+          </a>
+        </li>
+        <li>
+          <a th:href="@{/ram}">
+            <i class="bi bi-circle"></i><span>Ram</span>
+          </a>
+        </li>
+        <li>
+          <a th:href="@{/romvalue}">
+            <i class="bi bi-circle"></i><span>Bộ nhớ trong</span>
+          </a>
+        </li>
+      </ul>
+    </li><!-- End Tables Nav -->
+
+    <li class="nav-item">
+      <a class="nav-link collapsed" data-bs-target="#charts-nav" data-bs-toggle="collapse" href="#">
+        <i class="bi bi-bar-chart"></i><span>Quản Lý Nhân Viên</span><i class="bi bi-chevron-down ms-auto"></i>
+      </a>
+      <ul id="charts-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+        <li>
+          <a sec:authorize="hasAnyAuthority('ROLE_ADMIN')" href="/staff">
+            <i class="bi bi-circle"></i><span>Nhân viên</span>
+          </a>
+        </li>
+      </ul>
+    </li><!-- End Charts Nav -->
+
+    <li class="nav-item">
+      <a class="nav-link collapsed" data-bs-target="#icons-nav" data-bs-toggle="collapse" href="#">
+        <i class="bi bi-gem"></i><span>Bán hàng</span><i class="bi bi-chevron-down ms-auto"></i>
+      </a>
+      <ul id="icons-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+        <li>
+          <a href="/orders">
+            <i class="bi bi-circle"></i><span>Hóa đơn</span>
+          </a>
+        </li>
+        <li>
+          <a th:href="@{/voucher}">
+            <i class="bi bi-circle"></i><span>Mã giảm giá</span>
+          </a>
+        </li>
+        <li>
+          <a th:href="@{/promotion}">
+            <i class="bi bi-circle"></i><span>Chương trình khuyến mại</span>
+          </a>
+        </li>
+      </ul>
+    </li><!-- End Icons Nav -->
+
+  </ul>
+
+</aside><!-- End Sidebar-->
+
+<main id="main" class="main">
+
+  <section class="section profile">
+    <div class="row">
+      <div class="col-xl-4">
+
+        <div class="card">
+          <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+
+            <img th:src="${session.user.avatar}" alt="Profile" class="rounded-circle">
+            <h2 th:text="${session.user.fullName}"></h2>
+            <div class="social-links mt-2">
+              <a href="https://www.facebook.com/leo.line.9678/" class="twitter"><i class="bi bi-twitter"></i></a>
+              <a href="https://www.facebook.com/leo.line.9678/" class="facebook"><i class="bi bi-facebook"></i></a>
+              <a href="https://www.facebook.com/leo.line.9678/" class="instagram"><i class="bi bi-instagram"></i></a>
+              <a href="https://www.facebook.com/leo.line.9678/" class="linkedin"><i class="bi bi-linkedin"></i></a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="col-xl-8">
+
+        <div class="card">
+          <div class="card-body pt-3">
+            <!-- Bordered Tabs -->
+            <ul class="nav nav-tabs nav-tabs-bordered">
+
+              <li class="nav-item">
+                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-overview">Thông tin chính</button>
+              </li>
+
+              <li class="nav-item">
+                <button class="nav-link" data-bs-toggle="tab" onclick="$('#formPassword').trigger('reset')" data-bs-target="#profile-change-password">Đổi mật khẩu</button>
+              </li>
+
+            </ul>
+            <div class="tab-content pt-2">
+
+              <div class="tab-pane fade show active profile-overview" id="profile-overview">
+                <h5 class="card-title">Thông tin</h5>
+                <p class="small fst-italic" th:text="${session.user.note}"></p>
+
+                <h5 class="card-title">Thông tin chi tiết</h5>
+
+                <div class="row">
+                  <div class="col-lg-3 col-md-4 label ">Họ tên</div>
+                  <div class="col-lg-9 col-md-8" th:text="${session.user.fullName}"></div>
+                </div>
+
+                <div class="row">
+                  <div class="col-lg-3 col-md-4 label">Chức vụ</div>
+                  <div class="col-lg-9 col-md-8" th:text="${session.user.role}"></div>
+                </div>
+
+                <div class="row">
+                  <div class="col-lg-3 col-md-4 label">Quốc gia</div>
+                  <div class="col-lg-9 col-md-8">Việt Nam</div>
+                </div>
+
+                <div class="row">
+                  <div class="col-lg-3 col-md-4 label">Địa chỉ</div>
+                  <div class="col-lg-9 col-md-8" th:text="${session.user.address}"></div>
+                </div>
+
+                <div class="row">
+                  <div class="col-lg-3 col-md-4 label">Số điện thoai</div>
+                  <div class="col-lg-9 col-md-8" th:text="${session.user.phoneNumber}"></div>
+                </div>
+
+                <div class="row">
+                  <div class="col-lg-3 col-md-4 label">Email</div>
+                  <div class="col-lg-9 col-md-8" th:text="${session.user.email}"></div>
+                </div>
+
+              </div>
+              <div class="tab-pane fade pt-3" id="profile-change-password">
+                <!-- Change Password Form -->
+                <form>
+
+                  <div class="row mb-3">
+                    <label for="old-pass" class="col-md-4 col-lg-3 col-form-label">Mật khẩu cũ</label>
+                    <div class="col-md-8 col-lg-9">
+                      <input type="password" class="form-control" id="old-pass" name="passwordOld" placeholder="Mật khẩu cũ">
+                    </div>
+                  </div>
+
+                  <div class="row mb-3">
+                    <label for="newPassword" class="col-md-4 col-lg-3 col-form-label">Mật khẩu mới</label>
+                    <div class="col-md-8 col-lg-9">
+                      <input name="newpassword" type="password" class="form-control" id="newPassword">
+                    </div>
+                  </div>
+
+                  <div class="row mb-3">
+                    <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Xác nhận lại mật khẩu</label>
+                    <div class="col-md-8 col-lg-9">
+                      <input name="renewpassword" type="password" class="form-control" id="renewPassword">
+                    </div>
+                  </div>
+
+                  <div class="text-center">
+                    <button type="submit" class="btn btn-primary">Change Password</button>
+                  </div>
+                </form><!-- End Change Password Form -->
+
+              </div>
+
+            </div><!-- End Bordered Tabs -->
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+</main><!-- End #main -->
+
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+<!-- Vendor JS Files -->
+<script th:src="@{/assets/ckeditor/vendor/apexcharts/apexcharts.min.js}"></script>
+<script th:src="@{/assets/ckeditor/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/assets/ckeditor/vendor/chart.js/chart.umd.js}"></script>
+<script th:src="@{/assets/ckeditor/vendor/echarts/echarts.min.js}"></script>
+<script th:src="@{/assets/ckeditor/vendor/quill/quill.min.js}"></script>
+<script th:src="@{/assets/ckeditor/vendor/simple-datatables/simple-datatables.js}"></script>
+<script th:src="@{/assets/ckeditor/vendor/tinymce/tinymce.min.js}"></script>
+<script th:src="@{/assets/ckeditor/vendor/php-email-form/validate.js}"></script>
+
+<!-- Template Main JS File -->
+<script th:src="@{/assets/js2/main.js}"></script>
+<script th:src="@{/assets/js/script.js}"></script>
+
+<script>
+  $('#btnChangePassword1').click(function () {
+    var oldPass = $('#old-pass').val();
+    var newPass = $('#new-pass').val();
+    var confirmPass = $('#confirm-pass').val();
+    var id = $('#iduser').val();
+    if(oldPass.length === 0){
+      const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener('mouseenter', Swal.stopTimer)
+          toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+      })
+      Toast.fire({
+        icon: 'error',
+        title: 'Vui lòng nhập mật khẩu cũ'
+      })
+      return;
+    }
+    if(confirmPass.length === 0 || newPass.length === 0){
+      const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener('mouseenter', Swal.stopTimer)
+          toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+      })
+      Toast.fire({
+        icon: 'error',
+        title: 'Vui lòng nhập mật khẩu mới'
+      })
+      return;
+    }
+
+    if(confirmPass !== newPass){
+      $('#confirm-pass').val('');
+      $('#new-pass').val('');
+      const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener('mouseenter', Swal.stopTimer)
+          toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+      })
+      Toast.fire({
+        icon: 'error',
+        title: 'Mật khẩu xác nhận chưa giống nhau'
+      })
+      return;
+    }
+    console.log(id);
+    $.ajax({
+      url: '/api/staff/change-password/' + id + '/' + oldPass + '/' + newPass,
+      type: 'PUT',
+      success: function (result) {
+        console.log(result)
+        $('.modal-add-staff').modal('hide');
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'Đổi mật khẩu thành công',
+          showConfirmButton: true,
+          timerProgressBar: true,
+          timer: 2000
+        }).then(()=> window.location.reload());
+      },
+      error: function (error) {
+        console.log(error)
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+          }
+        })
+        Toast.fire({
+          icon: 'error',
+          title: error.responseText
+        })
+      }
+    })
+
+  })
+</script>
+
+</body>
+
+</html>
