@@ -1,0 +1,238 @@
+.main-page {
+    display: flex;
+}
+
+.mainLeft {
+    width: 234px;
+    margin-right: 20px;
+    margin-bottom: 20px;
+}
+
+.heading-page {
+    font-size: 20px;
+    color: #655be6;
+    padding-bottom: 16px;
+    font-weight: 700;
+    align-items: center;
+    display: flex;
+}
+
+.boxLeft {
+    margin-bottom: 15px;
+    position: relative;
+    padding: 10px 0;
+    border-radius: 5px;
+    box-shadow: 0 5px 15px rgb(0 0 0 / 10%);
+    background-color: white;
+}
+
+.leftTitle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 24px;
+    padding: 0 12px;
+    font-size: 15px;
+    font-weight: bold;
+    color: #111;
+}
+
+.boxLeftC {
+    padding: 0 12px;
+}
+
+.form-group {
+    margin-bottom: 10px;
+}
+
+.form-label {
+    font-weight: 700;
+}
+
+.mainRight {
+    min-height: 400px;
+    position: relative;
+    margin-bottom: 20px;
+}
+
+input:not([type="checkbox"], [type="radio"]),
+.form-select,
+textarea {
+    border-width: 0 0 1px !important;
+    border-radius: 0 !important;
+    width: 100%;
+}
+
+input:not([type="checkbox"], [type="radio"]):focus,
+.form-select:focus,
+textarea:focus-visible {
+    border-color: #655be6 !important;
+    border-width: 0 0 2px !important;
+    outline-style: none;
+}
+
+.table-hover>tbody>tr:hover {
+    --bs-table-accent-bg: #645be631;
+}
+
+.dropdown-menu>.dropdown-item>i {
+    width: 20px;
+    font-size: 15px;
+}
+
+.dropdown-menu:hover .dropdown-item:hover {
+    background-color: #645be656;
+    color: black;
+}
+
+table td i {
+    font-size: 20px;
+    padding: 0 2px;
+}
+
+table td i:hover {
+    cursor: pointer;
+}
+
+.form-label {
+    margin-bottom: 0!important;
+}
+
+.userBranch {
+    min-height: 200px;
+    height: auto;
+}
+
+.boxRole {
+    overflow: hidden;
+}
+
+ul {
+    list-style: none;
+}
+
+
+/* roleList */
+
+.roleList h3 {
+    font-size: 14px;
+    color: #655be6;
+    font-weight: 700;
+}
+
+.roleList ul {
+    margin-left: -10px;
+}
+
+.roleList ul li {
+    position: relative;
+}
+
+.roleList ul li i.arrow {
+    font-size: 10px;
+    position: absolute;
+    left: -15px;
+    top: 5px;
+    color: #655be6;
+    transition: ease-in-out 0.1s;
+}
+
+.arrow.down {
+    transform: rotate(90deg);
+    transition: transform .25s;
+}
+
+.expand {
+    display: none;
+}
+
+.userBranch {
+    padding: 5px 10px;
+    border-radius: 5px;
+    border: 1px solid #80808061;
+}
+
+.required {
+    color: red;
+}
+
+table.none-border, table.none-border td {
+    padding: 5px 5px 5px 20px;
+}
+
+
+
+table.border,
+table.border td,
+table.border th {
+    border: 1px solid;
+}
+
+table.border {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table.border th {
+    text-align: center;
+}
+
+td.number {
+    text-align: right;
+    white-space: nowrap;
+}
+
+th,
+td {
+    padding: 7px;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.border-none {
+    border: 0;
+}
+
+#loading-image {
+    display: none;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+}
+
+#loading-image>img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#loading-image>#bg-color {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    opacity: 0.5;
+    background-image: linear-gradient(to top, #30cfd0 0%, #330867 100%);
+}
+
+/* Hide spinner input number */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none!important;
+    margin: 0!important;
+}
+
+.status {
+    min-width: 145px;
+}
+
+.modal-body .col-lg-6>table {
+    width: 80%;
+}
